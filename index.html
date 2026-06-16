@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IMDG Compatibility – HXtos CY</title>
+<style>
+  :root {
+    --brand: #0b7fa3;
+    --brand-dark: #085f7a;
+    --brand-light: #e6f4f8;
+    --brand-mid: #d0eaf2;
+    --ok: #2e7d32; --ok-bg: #e8f5e9; --ok-border: #a5d6a7;
+    --warn: #e65100; --warn-bg: #fff3e0; --warn-border: #ffb74d;
+    --bad: #c62828; --bad-bg: #ffebee; --bad-border: #ef9a9a;
+    --note: #5c6bc0; --note-bg: #ede7f6; --note-border: #9fa8da;
+    --text: #1a2a30;
+    --muted: #607d8b;
+    --surface: #ffffff;
+    --bg: #f0f5f7;
+    --radius: 10px;
+    --mono: 'Courier New', monospace;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); color: var(--text); font-size:14px; }
+
+  /* HEADER */
+  .header { background: linear-gradient(120deg, var(--brand-dark) 0%, var(--brand) 100%); color:#fff; padding:22px 28px; display:flex; align-items:center; gap:16px; }
+  .header-icon { font-size:32px; }
+  .header h1 { font-size:20px; font-weight:700; letter-spacing:.3px; }
+  .header p { font-size:12px; opacity:.8; margin-top:3px; }
+  .header-badge { margin-left:auto; background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.3); border-radius:6px; padding:6px 12px; font-size:11px; text-align:center; }
+  .header-badge strong { display:block; font-size:13px; }
+
+  /* LAYOUT */
+  .container { max-width:1280px; margin:20px auto; padding:0 16px; display:grid; grid-template-columns:260px 1fr; gap:16px; }
+
+  /* SIDEBAR */
+  .sidebar { background: var(--surface); border-radius: var(--radius); box-shadow:0 2px 8px rgba(0,0,0,.08); overflow:hidden; align-self:start; }
+  .sidebar-header { background: var(--brand); color:#fff; padding:14px 16px; }
+  .sidebar-header h2 { font-size:13px; font-weight:700; }
+  .search-box { padding:10px 12px; border-bottom:1px solid #e8edf0; }
+  .search-box input { width:100%; padding:7px 10px; border:1px solid #cdd8dc; border-radius:6px; font-size:13px; outline:none; color:var(--text); }
+  .search-box input:focus { border-color:var(--brand); }
+  .class-list { max-height:520px; overflow-y:auto; }
+  .class-item { padding:11px 14px; border-bottom:1px solid #f0f4f6; cursor:pointer; transition:all .15s; display:flex; align-items:center; gap:10px; }
+  .class-item:hover { background:var(--brand-light); padding-left:18px; }
+  .class-item.active { background:var(--brand); color:#fff; }
+  .class-item.active .class-num { background:rgba(255,255,255,.25); color:#fff; }
+  .class-num { background:var(--brand-light); color:var(--brand); font-size:11px; font-weight:700; border-radius:4px; padding:2px 7px; min-width:26px; text-align:center; font-family:var(--mono); }
+  .class-name { font-size:13px; line-height:1.3; }
+  .class-sub { font-size:11px; opacity:.65; }
+
+  /* PANEL */
+  .panel { display:flex; flex-direction:column; gap:16px; }
+
+  .card { background:var(--surface); border-radius:var(--radius); box-shadow:0 2px 8px rgba(0,0,0,.08); padding:20px; }
+
+  .empty { text-align:center; padding:60px 20px; color:var(--muted); }
+  .empty .empty-icon { font-size:48px; margin-bottom:12px; }
+  .empty p { font-size:15px; }
+
+  .detail-title { font-size:17px; font-weight:700; color:var(--brand-dark); border-bottom:2px solid var(--brand-light); padding-bottom:10px; margin-bottom:4px; }
+  .detail-desc { color:var(--muted); font-size:13px; margin-bottom:6px; }
+  .detail-ref { font-size:11px; color:var(--muted); font-family:var(--mono); background:var(--bg); display:inline-block; padding:3px 8px; border-radius:4px; }
+
+  .subclasses-row { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+  .sub-chip { background:var(--brand-light); color:var(--brand-dark); border:1px solid var(--brand-mid); border-radius:6px; padding:5px 10px; font-size:11px; }
+  .sub-chip strong { display:block; font-size:12px; }
+
+  .section { margin-top:16px; }
+  .section-label { font-size:11px; font-weight:700; letter-spacing:.8px; text-transform:uppercase; margin-bottom:8px; display:flex; align-items:center; gap:6px; }
+  .section-label.bad  { color:var(--bad); }
+  .section-label.warn { color:var(--warn); }
+  .section-label.ok   { color:var(--ok); }
+  .section-label.note { color:var(--note); }
+
+  .tags { display:flex; flex-wrap:wrap; gap:7px; }
+  .tag { padding:5px 12px; border-radius:20px; font-size:12px; font-weight:600; border:1px solid; }
+  .tag-bad  { background:var(--bad-bg);  color:var(--bad);  border-color:var(--bad-border); }
+  .tag-warn { background:var(--warn-bg); color:var(--warn); border-color:var(--warn-border); }
+  .tag-ok   { background:var(--ok-bg);   color:var(--ok);   border-color:var(--ok-border); }
+  .tag-note { background:var(--note-bg); color:var(--note); border-color:var(--note-border); }
+
+  .notes-box { background:#f8fbfc; border-left:3px solid var(--brand); border-radius:0 6px 6px 0; padding:10px 14px; font-size:12px; color:var(--muted); margin-top:14px; line-height:1.7; }
+  .notes-box strong { color:var(--text); display:block; margin-bottom:4px; font-size:12px; }
+
+  /* MATRIX */
+  .matrix-card { background:var(--surface); border-radius:var(--radius); box-shadow:0 2px 8px rgba(0,0,0,.08); padding:20px; overflow-x:auto; grid-column:1/-1; }
+  .matrix-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; flex-wrap:wrap; gap:10px; }
+  .matrix-title { font-size:15px; font-weight:700; color:var(--brand-dark); }
+  .legend { display:flex; gap:14px; flex-wrap:wrap; }
+  .legend-item { display:flex; align-items:center; gap:5px; font-size:12px; color:var(--muted); }
+  .legend-dot { width:14px; height:14px; border-radius:3px; }
+
+  table { width:100%; border-collapse:collapse; min-width:500px; }
+  th, td { padding:9px 11px; text-align:center; border:1px solid #e0eaed; font-size:13px; }
+  thead th { background:var(--brand-light); color:var(--brand-dark); font-weight:700; font-size:12px; }
+  tbody th { background:#f5f9fa; color:var(--brand-dark); font-weight:700; font-size:12px; white-space:nowrap; text-align:left; padding-left:10px; }
+  .cell-ok   { background:var(--ok-bg);   color:var(--ok);   font-weight:700; }
+  .cell-warn { background:var(--warn-bg); color:var(--warn); font-weight:700; }
+  .cell-bad  { background:var(--bad-bg);  color:var(--bad);  font-weight:700; }
+  .cell-self { background:#f0f5f7; color:var(--muted); font-size:10px; }
+
+  /* MISSING DATA ALERT */
+  .alert { background:#fffde7; border:1px solid #ffe082; border-radius:8px; padding:12px 16px; font-size:12px; color:#795548; display:flex; gap:10px; align-items:flex-start; grid-column:1/-1; }
+  .alert-icon { font-size:18px; flex-shrink:0; }
+
+  /* FOOTER */
+  footer { text-align:center; padding:24px; color:var(--muted); font-size:11px; grid-column:1/-1; }
+
+  @media (max-width:800px) {
+    .container { grid-template-columns:1fr; }
+    .matrix-card { grid-column:1; }
+    .alert { grid-column:1; }
+    footer { grid-column:1; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-icon">⚓</div>
+  <div>
+    <h1>IMDG Compatibility Navigator</h1>
+    <p>Matriz de Compatibilidade de Carga Perigosa · HXtos CY</p>
+  </div>
+  <div class="header-badge">
+    <strong>IMDG Code</strong>
+    Ed. 41-22
+  </div>
+</div>
+
+<div class="container" id="mainGrid">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-header"><h2>🏷 Classes IMDG</h2></div>
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Buscar classe..." oninput="filterClasses()">
+    </div>
+    <div class="class-list" id="classList"></div>
+  </div>
+
+  <!-- PANEL -->
+  <div class="panel" id="panel">
+    <div class="card">
+      <div class="empty">
+        <div class="empty-icon">👈</div>
+        <p>Selecione uma classe para ver compatibilidades</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MISSING DATA ALERT -->
+  <div class="alert">
+    <span class="alert-icon">⚠️</span>
+    <div>
+      <strong>Atenção – Limitações desta ferramenta:</strong>
+      As compatibilidades refletem as regras gerais da Tabela 7.2.4 do IMDG Code Ed. 41-22. 
+      Subclasses de Classe 1 (1.1–1.6) e divisões de Classe 2 (2.1/2.2/2.3) possuem regras específicas mais restritivas não expandidas aqui. 
+      Materiais Radioativos (Classe 7) e Substâncias Perigosas ao Meio Ambiente podem ter requisitos adicionais. 
+      Consulte sempre o IMDG Code e o DGS (Dangerous Goods Segregation) antes de carregar.
+    </div>
+  </div>
+
+  <!-- MATRIX -->
+  <div class="matrix-card">
+    <div class="matrix-header">
+      <span class="matrix-title">📊 Matriz de Segregação Completa</span>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--ok-bg);border:1px solid var(--ok-border)"></div>✅ Compatível</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--warn-bg);border:1px solid var(--warn-border)"></div>⚠️ Restrito / Segregar</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--bad-bg);border:1px solid var(--bad-border)"></div>🚫 Proibido</div>
+      </div>
+    </div>
+    <table>
+      <thead id="matrixHead"></thead>
+      <tbody id="matrixBody"></tbody>
+    </table>
+  </div>
+
+  <footer>
+    HXtos CY · IMDG Compatibility Navigator · Baseado no IMDG Code Edição 41-22 · Para uso operacional, consulte sempre o documento oficial.
+  </footer>
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+// DATA (IMDG Code Ed.41 Table 7.2.4)
+// Classes com nomes corretos, subclasses e notas
+// ─────────────────────────────────────────────
+const classes = [
+  {
+    id: 1, code:"1", name:"Explosivos",
+    desc:"Substâncias e artigos com risco de explosão em massa, projeção ou incêndio.",
+    ref:"IMDG 2.1",
+    subclasses:[
+      {id:"1.1", label:"Risco de explosão em massa"},
+      {id:"1.2", label:"Risco de projeção, sem explosão em massa"},
+      {id:"1.3", label:"Risco de fogo e pequeno risco de explosão"},
+      {id:"1.4", label:"Risco menor — sem efeito fora do volume"},
+      {id:"1.5", label:"Muito insensível com risco de explosão em massa"},
+      {id:"1.6", label:"Extremamente insensível, sem risco de explosão em massa"},
+    ],
+    notes:"Subclasses 1.1, 1.2 e 1.3 são incompatíveis entre si em diversos grupos de compatibilidade. Classe 1 requer Certificado de Segregação específico.",
+    prohibited:[2,3,4,5,6,7,8,9],
+    restricted:[],
+    compatible:[]
+  },
+  {
+    id: 2, code:"2", name:"Gases",
+    desc:"Gases comprimidos, liquefeitos ou dissolvidos sob pressão.",
+    ref:"IMDG 2.2",
+    subclasses:[
+      {id:"2.1", label:"Gases inflamáveis (ex: propano, hidrogênio)"},
+      {id:"2.2", label:"Gases não-inflamáveis, não-tóxicos (ex: nitrogênio, CO₂)"},
+      {id:"2.3", label:"Gases tóxicos (ex: cloro, amônia)"},
+    ],
+    notes:"Gases tóxicos (2.3) possuem restrições adicionais de segregação. Aerossóis são tratados como Classe 2.",
+    prohibited:[1,8],
+    restricted:[3,4,5,6,7,9],
+    compatible:[]
+  },
+  {
+    id: 3, code:"3", name:"Líquidos Inflamáveis",
+    desc:"Líquidos com ponto de fulgor ≤ 60 °C ou transportados acima do ponto de fulgor.",
+    ref:"IMDG 2.3",
+    subclasses:[
+      {id:"I",   label:"Pf < 23 °C, ponto de ebulição ≤ 35 °C (ex: éter, acetona)"},
+      {id:"II",  label:"Pf < 23 °C, ponto de ebulição > 35 °C (ex: benzeno, gasolina)"},
+      {id:"III", label:"23 °C ≤ Pf ≤ 60 °C (ex: diesel, querosene)"},
+    ],
+    notes:"Embalagens com Pf > 60 °C podem ser isentas. Verificar Flash Point no MSDS.",
+    prohibited:[1,5,7,8],
+    restricted:[2,4,6,9],
+    compatible:[]
+  },
+  {
+    id: 4, code:"4", name:"Sólidos Inflamáveis / Substâncias Auto-Reativas e Pirofóricas",
+    desc:"Inclui sólidos facilmente inflamáveis (4.1), substâncias sujeitas a combustão espontânea (4.2) e substâncias que em contato com água emitem gases inflamáveis (4.3).",
+    ref:"IMDG 2.4",
+    subclasses:[
+      {id:"4.1", label:"Sólidos inflamáveis e substâncias auto-reativas"},
+      {id:"4.2", label:"Substâncias sujeitas a combustão espontânea (pirofóricas)"},
+      {id:"4.3", label:"Substâncias que em contato com água emitem gases inflamáveis"},
+    ],
+    notes:"4.2 (pirofóricos) requerem segregação rigorosa de fontes de umidade. 4.3 proibido próximo a qualquer líquido ou material úmido.",
+    prohibited:[1,7,8],
+    restricted:[2,3,5,6,9],
+    compatible:[]
+  },
+  {
+    id: 5, code:"5", name:"Substâncias Oxidantes e Peróxidos Orgânicos",
+    desc:"Substâncias que liberam oxigênio e intensificam combustão (5.1) e peróxidos orgânicos instáveis termicamente (5.2).",
+    ref:"IMDG 2.5",
+    subclasses:[
+      {id:"5.1", label:"Substâncias oxidantes (ex: hipoclorito, nitrato de amônio)"},
+      {id:"5.2", label:"Peróxidos orgânicos (ex: peróxido de benzoíla)"},
+    ],
+    notes:"5.2 possui temperatura de controle crítica — verificar SAPT/SADT. Muitos 5.2 requerem refrigeração e são incompatíveis com ácidos.",
+    prohibited:[1,7,8],
+    restricted:[2,3,4,6],
+    compatible:[9]
+  },
+  {
+    id: 6, code:"6", name:"Substâncias Tóxicas e Infectantes",
+    desc:"Substâncias com risco de envenenamento por ingestão, inalação ou contato (6.1) e substâncias infecciosas (6.2).",
+    ref:"IMDG 2.6",
+    subclasses:[
+      {id:"6.1", label:"Substâncias tóxicas (ex: arsênico, cianetos, pesticidas)"},
+      {id:"6.2", label:"Substâncias infectantes (ex: amostras biológicas, categoria A/B)"},
+    ],
+    notes:"6.2 (substâncias infectantes) possuem requisitos de embalagem P650 e segregação de alimentos/ração. Agentes de categoria A (UN 2814/2900) são extremamente restritivos.",
+    prohibited:[1],
+    restricted:[2,3,4,5,7,8],
+    compatible:[9]
+  },
+  {
+    id: 7, code:"7", name:"Material Radioativo",
+    desc:"Materiais com atividade específica superior a 70 kBq/kg (2 nCi/g).",
+    ref:"IMDG 2.7 / IAEA SSR-6",
+    subclasses:[
+      {id:"I-WHITE",   label:"Índice de transporte = 0 (superfície ≤ 0.5 mR/h)"},
+      {id:"II-YELLOW", label:"IT ≤ 1 (superfície ≤ 50 mR/h)"},
+      {id:"III-YELLOW",label:"IT ≤ 10 (superfície ≤ 200 mR/h)"},
+      {id:"FISSILE",   label:"Material físsil — controle de criticidade obrigatório"},
+    ],
+    notes:"⚠️ AUSÊNCIA REGULATÓRIA: Material radioativo requer aprovação prévia do operador e cálculo de Índice de Transporte (IT) acumulado por porão. Não pode ser estivado com filmes fotográficos, alimentos ou animais vivos. Consulte sempre o IMDG 7.1.4.",
+    prohibited:[1,3,4,5,8],
+    restricted:[2,6,9],
+    compatible:[]
+  },
+  {
+    id: 8, code:"8", name:"Substâncias Corrosivas",
+    desc:"Substâncias que por ação química causam dano severo ao tecido vivo e/ou danificam materiais e meios de transporte.",
+    ref:"IMDG 2.8",
+    subclasses:[
+      {id:"Ácidos",  label:"Ácidos corrosivos (ex: ácido sulfúrico, ácido clorídrico)"},
+      {id:"Bases",   label:"Bases corrosivas (ex: hidróxido de sódio, amônia aquosa)"},
+      {id:"Outros",  label:"Outros corrosivos (ex: hipoclorito, formaldeído)"},
+    ],
+    notes:"⚠️ AUSÊNCIA REGULATÓRIA: Ácidos e bases (ambos Classe 8) são incompatíveis entre si — a matriz 8×8 aparece como ✅ mas esta combinação específica requer segregação interna. Verificar Tabela 7.2.4 nota (c).",
+    prohibited:[1,2,3,4,5,7],
+    restricted:[6,9],
+    compatible:[]
+  },
+  {
+    id: 9, code:"9", name:"Substâncias Perigosas Diversas",
+    desc:"Substâncias que apresentam risco durante o transporte mas não se enquadram nas Classes 1–8 (ex: baterias de lítio, dry ice, substâncias perigosas ao meio ambiente).",
+    ref:"IMDG 2.9",
+    subclasses:[
+      {id:"Baterias de Lítio", label:"UN 3090 / 3091 / 3480 / 3481 — regras especiais SP 188/230"},
+      {id:"Dry Ice (CO₂ sólido)",label:"UN 1845 — risco de asfixia em porões fechados"},
+      {id:"MAM",               label:"Substâncias Perigosas ao Meio Ambiente (Marine Pollutants)"},
+      {id:"Elevadas Temperaturas",label:"Substâncias transportadas quentes (ex: asfalto, enxofre fundido)"},
+    ],
+    notes:"⚠️ AUSÊNCIA REGULATÓRIA: Baterias de lítio (especialmente Seção II) estão sujeitas a restrições de quantidade por embalagem e por aeronave/navio que não aparecem na matriz padrão. Dry ice em porões requer ventilação e aviso à tripulação.",
+    prohibited:[1,5],
+    restricted:[2,3,4,7,8],
+    compatible:[6]
+  },
+];
+
+// ─────────────────────────────────────────────
+// BUILD SIDEBAR
+// ─────────────────────────────────────────────
+function renderList(filter="") {
+  const f = filter.toLowerCase();
+  const html = classes
+    .filter(c => !f || c.name.toLowerCase().includes(f) || String(c.id).includes(f))
+    .map(c => `
+      <div class="class-item" id="item-${c.id}" onclick="selectClass(${c.id})">
+        <span class="class-num">${c.code}</span>
+        <span>
+          <div class="class-name">${c.name}</div>
+        </span>
+      </div>
+    `).join('');
+  document.getElementById('classList').innerHTML = html || '<div style="padding:16px;color:var(--muted);font-size:13px;">Nenhuma classe encontrada.</div>';
+}
+
+function filterClasses() {
+  renderList(document.getElementById('searchInput').value);
+}
+
+// ─────────────────────────────────────────────
+// SELECT CLASS → DETAIL PANEL
+// ─────────────────────────────────────────────
+function selectClass(id) {
+  const c = classes.find(x => x.id === id);
+  document.querySelectorAll('.class-item').forEach(el => el.classList.remove('active'));
+  const item = document.getElementById('item-'+id);
+  if(item) item.classList.add('active');
+
+  const getName = (cid) => { const cx = classes.find(x=>x.id===cid); return cx ? `Classe ${cx.code} – ${cx.name}` : ''; };
+
+  // Subclasses
+  let subHTML = '';
+  if(c.subclasses && c.subclasses.length){
+    subHTML = `<div class="subclasses-row">`+
+      c.subclasses.map(s=>`<div class="sub-chip"><strong>${s.id}</strong>${s.label}</div>`).join('')+
+      `</div>`;
+  }
+
+  // Prohibited
+  let prohibHTML = '';
+  if(c.prohibited.length){
+    prohibHTML = `<div class="section">
+      <div class="section-label bad">🚫 Proibido com</div>
+      <div class="tags">${c.prohibited.map(pid=>`<span class="tag tag-bad">${getName(pid)}</span>`).join('')}</div>
+    </div>`;
+  }
+
+  // Restricted
+  let restrHTML = '';
+  if(c.restricted.length){
+    restrHTML = `<div class="section">
+      <div class="section-label warn">⚠️ Segregação obrigatória</div>
+      <div class="tags">${c.restricted.map(rid=>`<span class="tag tag-warn">${getName(rid)}</span>`).join('')}</div>
+    </div>`;
+  }
+
+  // Compatible (explicit + derived)
+  const allOthers = classes.filter(x=>x.id!==id);
+  const compatList = allOthers.filter(x => !c.prohibited.includes(x.id) && !c.restricted.includes(x.id));
+  let compatHTML = '';
+  if(compatList.length){
+    compatHTML = `<div class="section">
+      <div class="section-label ok">✅ Compatível com</div>
+      <div class="tags">${compatList.map(cx=>`<span class="tag tag-ok">Classe ${cx.code} – ${cx.name}</span>`).join('')}</div>
+    </div>`;
+  }
+
+  // Notes / ausências
+  let notesHTML = '';
+  if(c.notes){
+    notesHTML = `<div class="notes-box"><strong>📌 Notas regulatórias e ausências:</strong>${c.notes}</div>`;
+  }
+
+  document.getElementById('panel').innerHTML = `
+    <div class="card">
+      <div class="detail-title">Classe ${c.code} – ${c.name}</div>
+      <div class="detail-desc">${c.desc}</div>
+      <span class="detail-ref">📖 Ref: ${c.ref}</span>
+      ${subHTML}
+      ${prohibHTML}
+      ${restrHTML}
+      ${compatHTML}
+      ${notesHTML}
+    </div>
+  `;
+}
+
+// ─────────────────────────────────────────────
+// BUILD MATRIX
+// ─────────────────────────────────────────────
+function getStatus(a, b) {
+  if(a === b) return 'self';
+  const ca = classes.find(c=>c.id===a);
+  if(!ca) return 'ok';
+  if(ca.prohibited.includes(b)) return 'bad';
+  if(ca.restricted.includes(b)) return 'warn';
+  return 'ok';
+}
+
+function renderMatrix() {
+  // Header
+  let headHTML = '<tr><th style="text-align:left;min-width:130px;">Classe</th>';
+  classes.forEach(c => headHTML += `<th>${c.code}</th>`);
+  headHTML += '</tr>';
+  document.getElementById('matrixHead').innerHTML = headHTML;
+
+  // Body
+  let bodyHTML = '';
+  classes.forEach(row => {
+    bodyHTML += `<tr><th>${row.code} – ${row.name}</th>`;
+    classes.forEach(col => {
+      const s = getStatus(row.id, col.id);
+      const sym = s==='ok'?'✅': s==='warn'?'⚠️': s==='self'?'—':'🚫';
+      const cls = s==='self'?'cell-self':`cell-${s}`;
+      bodyHTML += `<td class="${cls}" title="Cl.${row.code} × Cl.${col.code}">${sym}</td>`;
+    });
+    bodyHTML += '</tr>';
+  });
+  document.getElementById('matrixBody').innerHTML = bodyHTML;
+}
+
+// INIT
+renderList();
+renderMatrix();
+</script>
+</body>
+</html>

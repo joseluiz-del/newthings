@@ -1,454 +1,1003 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-<head>
-<meta charset="UTF-8">
+<!-- saved from url=(0060)file:///C:/Users/HxTos/Downloads/hx_cy_infrablock%20(7).html -->
+<html lang="pt-BR"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IMDG Compatibility – HXtos CY</title>
+<title>HX CY — Bloqueios Infraestruturais</title>
+<link rel="stylesheet" href="./HX CY — Bloqueios Infraestruturais_files/tabler-icons.min.css">
 <style>
-  :root {
-    --brand: #0b7fa3;
-    --brand-dark: #085f7a;
-    --brand-light: #e6f4f8;
-    --brand-mid: #d0eaf2;
-    --ok: #2e7d32; --ok-bg: #e8f5e9; --ok-border: #a5d6a7;
-    --warn: #e65100; --warn-bg: #fff3e0; --warn-border: #ffb74d;
-    --bad: #c62828; --bad-bg: #ffebee; --bad-border: #ef9a9a;
-    --note: #5c6bc0; --note-bg: #ede7f6; --note-border: #9fa8da;
-    --text: #1a2a30;
-    --muted: #607d8b;
-    --surface: #ffffff;
-    --bg: #f0f5f7;
-    --radius: 10px;
-    --mono: 'Courier New', monospace;
-  }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); color: var(--text); font-size:14px; }
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --cy:#0097A7;--cym:#26C6DA;--cyd:#00838F;--cyl:#E0F7FA;--cyla:#B2EBF2;
+  --blk:#212121;--blk2:#37474F;
+  --bg:#F5F5F5;--bg2:#fff;--bd:#E0E0E0;
+  --tx:#212121;--tx2:#546E7A;--tx3:#90A4AE;
+  --red:#E53935;
+}
+html,body{height:100%;font-family:'Inter',system-ui,sans-serif;background:var(--bg);overflow:hidden;}
+body{display:flex;flex-direction:column;}
 
-  /* HEADER */
-  .header { background: linear-gradient(120deg, var(--brand-dark) 0%, var(--brand) 100%); color:#fff; padding:22px 28px; display:flex; align-items:center; gap:16px; }
-  .header-icon { font-size:32px; }
-  .header h1 { font-size:20px; font-weight:700; letter-spacing:.3px; }
-  .header p { font-size:12px; opacity:.8; margin-top:3px; }
-  .header-badge { margin-left:auto; background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.3); border-radius:6px; padding:6px 12px; font-size:11px; text-align:center; }
-  .header-badge strong { display:block; font-size:13px; }
+/* topbar */
+.topbar{height:50px;background:var(--blk);display:flex;align-items:center;gap:10px;padding:0 20px;flex-shrink:0;border-bottom:2px solid var(--cy);}
+.tb-logo{color:var(--cym);font-size:19px;}
+.tb-title{font-size:14px;font-weight:700;color:var(--cym);}
+.tb-sep{width:1px;height:18px;background:rgba(255,255,255,.15);margin:0 4px;}
+.tb-sub{font-size:11px;color:rgba(255,255,255,.4);}
+.tb-spacer{flex:1;}
+.tb-date{font-size:11px;color:rgba(255,255,255,.3);}
 
-  /* LAYOUT */
-  .container { max-width:1280px; margin:20px auto; padding:0 16px; display:grid; grid-template-columns:260px 1fr; gap:16px; }
+/* quadra bar */
+.qbar{height:44px;background:var(--bg2);border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:10px;padding:0 18px;flex-shrink:0;}
+.qbar-label{font-size:12px;font-weight:600;color:var(--tx2);display:flex;align-items:center;gap:5px;white-space:nowrap;}
+.qbar-label i{color:var(--cy);}
+.qdrop-wrap{position:relative;}
+.qdrop{padding:5px 26px 5px 10px;border:1px solid var(--bd);border-radius:6px;font-size:13px;font-weight:500;color:var(--tx);background:var(--bg2);appearance:none;cursor:pointer;min-width:130px;}
+.qdrop:focus{outline:none;border-color:var(--cy);}
+.qdrop-arrow{position:absolute;right:8px;top:50%;transform:translateY(-50%);color:var(--tx3);font-size:12px;pointer-events:none;}
+.qbtn{display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--bd);background:var(--bg);color:var(--tx2);}
+.qbtn:hover{background:var(--cyl);color:var(--cyd);border-color:var(--cyla);}
+.qinfo{font-size:11px;color:var(--tx3);}
+.mode-group{display:flex;border:1px solid var(--bd);border-radius:6px;overflow:hidden;margin-left:auto;}
+.mbtn{font-size:11px;padding:6px 12px;cursor:pointer;background:var(--bg2);color:var(--tx2);border:none;display:flex;align-items:center;gap:4px;font-weight:500;}
+.mbtn+.mbtn{border-left:1px solid var(--bd);}
+.mbtn.on{background:var(--cym);color:#fff;}
+.mbtn:hover:not(.on){background:var(--cyl);color:var(--cyd);}
 
-  /* SIDEBAR */
-  .sidebar { background: var(--surface); border-radius: var(--radius); box-shadow:0 2px 8px rgba(0,0,0,.08); overflow:hidden; align-self:start; }
-  .sidebar-header { background: var(--brand); color:#fff; padding:14px 16px; }
-  .sidebar-header h2 { font-size:13px; font-weight:700; }
-  .search-box { padding:10px 12px; border-bottom:1px solid #e8edf0; }
-  .search-box input { width:100%; padding:7px 10px; border:1px solid #cdd8dc; border-radius:6px; font-size:13px; outline:none; color:var(--text); }
-  .search-box input:focus { border-color:var(--brand); }
-  .class-list { max-height:520px; overflow-y:auto; }
-  .class-item { padding:11px 14px; border-bottom:1px solid #f0f4f6; cursor:pointer; transition:all .15s; display:flex; align-items:center; gap:10px; }
-  .class-item:hover { background:var(--brand-light); padding-left:18px; }
-  .class-item.active { background:var(--brand); color:#fff; }
-  .class-item.active .class-num { background:rgba(255,255,255,.25); color:#fff; }
-  .class-num { background:var(--brand-light); color:var(--brand); font-size:11px; font-weight:700; border-radius:4px; padding:2px 7px; min-width:26px; text-align:center; font-family:var(--mono); }
-  .class-name { font-size:13px; line-height:1.3; }
-  .class-sub { font-size:11px; opacity:.65; }
+/* layout */
+.main{display:flex;flex:1;overflow:hidden;}
+.yard-col{flex:1;overflow-y:auto;padding:16px 20px;min-width:0;}
+.sec-title{font-size:14px;font-weight:700;color:var(--cy);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.leg-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;}
+.leg{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--tx2);}
+.leg-box{width:14px;height:14px;border-radius:3px;}
 
-  /* PANEL */
-  .panel { display:flex; flex-direction:column; gap:16px; }
+/* bay card */
+.bay-card{background:var(--bg2);border:1px solid var(--bd);border-radius:8px;padding:14px 16px;margin-bottom:14px;}
+.bay-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.bay-lbl{font-size:13px;font-weight:600;color:var(--tx);}
+.bay-lbl span{color:var(--cy);font-weight:700;}
+.bay-hint{font-size:10px;color:var(--tx3);}
+.grid-scroll{overflow-x:auto;padding-bottom:2px;}
+table.gtbl{border-collapse:separate;border-spacing:3px;user-select:none;}
+.gh{color:var(--tx2);padding:2px 4px;text-align:center;font-weight:700;font-size:10px;min-width:50px;}
+.grl{color:var(--tx2);padding:2px 8px 2px 0;font-weight:700;font-size:11px;text-align:right;white-space:nowrap;}
+.slot{width:50px;height:40px;border-radius:4px;display:flex;align-items:center;justify-content:center;}
+.slot.occ{background:var(--cym);border:1px solid var(--cyd);}
+.slot.blk{border-width:2px;}
+.slot.empty{background:transparent;border:none;}
+.slot.hi{outline:2.5px solid var(--blk);outline-offset:-2px;z-index:2;position:relative;}
+.si{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;pointer-events:none;}
+.sc{font-size:9px;font-weight:700;color:#fff;line-height:1;text-align:center;}
+.ss-sub{font-size:8px;color:rgba(255,255,255,.75);}
+.bay-foot{margin-top:8px;font-size:10px;color:var(--tx3);display:flex;align-items:center;gap:4px;}
 
-  .card { background:var(--surface); border-radius:var(--radius); box-shadow:0 2px 8px rgba(0,0,0,.08); padding:20px; }
+/* lasso */
+#lasso-svg{position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:800;}
 
-  .empty { text-align:center; padding:60px 20px; color:var(--muted); }
-  .empty .empty-icon { font-size:48px; margin-bottom:12px; }
-  .empty p { font-size:15px; }
+/* sidebar */
+.sidebar{width:280px;flex-shrink:0;border-left:1px solid var(--bd);display:flex;flex-direction:column;background:var(--bg2);}
+.sb-hdr{background:var(--cym);padding:10px 14px;display:flex;align-items:center;gap:7px;flex-shrink:0;}
+.sb-hdr-title{font-size:13px;font-weight:700;color:#fff;flex:1;}
+.sb-add-btn{font-size:11px;color:#fff;cursor:pointer;display:flex;align-items:center;gap:4px;border:1px solid rgba(255,255,255,.5);border-radius:5px;padding:5px 10px;font-weight:600;background:rgba(255,255,255,.12);}
+.sb-add-btn:hover{background:rgba(255,255,255,.25);}
 
-  .detail-title { font-size:17px; font-weight:700; color:var(--brand-dark); border-bottom:2px solid var(--brand-light); padding-bottom:10px; margin-bottom:4px; }
-  .detail-desc { color:var(--muted); font-size:13px; margin-bottom:6px; }
-  .detail-ref { font-size:11px; color:var(--muted); font-family:var(--mono); background:var(--bg); display:inline-block; padding:3px 8px; border-radius:4px; }
+.stats-row{display:flex;gap:5px;padding:8px 10px;border-bottom:1px solid var(--bd);flex-shrink:0;background:var(--bg);}
+.stat{flex:1;background:var(--bg2);border:1px solid var(--cyla);border-radius:6px;padding:6px;text-align:center;}
+.stat-n{font-size:16px;font-weight:700;color:var(--cy);}
+.stat-l{font-size:9px;color:var(--tx3);margin-top:1px;}
 
-  .subclasses-row { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
-  .sub-chip { background:var(--brand-light); color:var(--brand-dark); border:1px solid var(--brand-mid); border-radius:6px; padding:5px 10px; font-size:11px; }
-  .sub-chip strong { display:block; font-size:12px; }
+.abar{margin:8px 10px 0;background:var(--cyl);border-left:3px solid var(--cy);border-radius:0 6px 6px 0;padding:8px 10px;display:none;}
+.abar.on{display:block;}
+.abar-top{font-size:10px;color:var(--tx3);margin-bottom:3px;display:flex;align-items:center;gap:4px;}
+.abar-name{font-size:12px;font-weight:700;color:var(--cy);display:flex;align-items:center;gap:6px;}
+.adot{width:10px;height:10px;border-radius:50%;flex-shrink:0;display:inline-block;}
+.abar-tip{font-size:9px;color:var(--tx3);margin-top:3px;line-height:1.4;}
 
-  .section { margin-top:16px; }
-  .section-label { font-size:11px; font-weight:700; letter-spacing:.8px; text-transform:uppercase; margin-bottom:8px; display:flex; align-items:center; gap:6px; }
-  .section-label.bad  { color:var(--bad); }
-  .section-label.warn { color:var(--warn); }
-  .section-label.ok   { color:var(--ok); }
-  .section-label.note { color:var(--note); }
+.sb-sect{padding:9px 12px 3px;font-size:9px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.7px;}
+.sb-scroll{flex:1;overflow-y:auto;padding:4px 10px 8px;}
 
-  .tags { display:flex; flex-wrap:wrap; gap:7px; }
-  .tag { padding:5px 12px; border-radius:20px; font-size:12px; font-weight:600; border:1px solid; }
-  .tag-bad  { background:var(--bad-bg);  color:var(--bad);  border-color:var(--bad-border); }
-  .tag-warn { background:var(--warn-bg); color:var(--warn); border-color:var(--warn-border); }
-  .tag-ok   { background:var(--ok-bg);   color:var(--ok);   border-color:var(--ok-border); }
-  .tag-note { background:var(--note-bg); color:var(--note); border-color:var(--note-border); }
+.pc{border:1px solid var(--bd);border-radius:7px;padding:9px 11px;background:var(--bg2);cursor:pointer;margin-bottom:6px;transition:border-color .12s,background .12s;}
+.pc:hover{border-color:var(--cyla);background:var(--cyl);}
+.pc.on{border:2px solid var(--cy);background:var(--cyl);}
+.pc-top{display:flex;align-items:center;gap:7px;margin-bottom:4px;}
+.pdot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.pc-name{font-size:12px;font-weight:700;color:var(--tx);flex:1;}
+.pc-acts{display:flex;gap:2px;opacity:0;}
+.pc:hover .pc-acts,.pc.on .pc-acts{opacity:1;}
+.pc-btn{width:22px;height:22px;border:none;background:none;cursor:pointer;color:var(--tx2);display:flex;align-items:center;justify-content:center;border-radius:4px;font-size:13px;}
+.pc-btn:hover{background:rgba(0,0,0,.07);}
+.pc-desc{font-size:10px;color:var(--tx3);margin-bottom:4px;line-height:1.4;}
+.pc-scopes{display:flex;gap:3px;flex-wrap:wrap;}
+.pcs{font-size:9px;padding:2px 6px;border-radius:10px;font-weight:700;}
+.pcs.slot{background:var(--cyl);color:var(--cyd);}
+.pcs.row{background:#E8F5E9;color:#1B5E20;}
+.pcs.tier{background:#FFF3E0;color:#BF360C;}
+.ss-badges{display:flex;gap:3px;flex-wrap:wrap;margin-top:5px;}
+.ss-badge{font-size:9px;padding:2px 6px;border-radius:10px;font-weight:600;display:flex;align-items:center;gap:3px;}
+.empty-st{text-align:center;padding:28px 14px;color:var(--tx3);font-size:12px;line-height:1.8;}
 
-  .notes-box { background:#f8fbfc; border-left:3px solid var(--brand); border-radius:0 6px 6px 0; padding:10px 14px; font-size:12px; color:var(--muted); margin-top:14px; line-height:1.7; }
-  .notes-box strong { color:var(--text); display:block; margin-bottom:4px; font-size:12px; }
+/* applied list */
+.blk-sect{border-top:1px solid var(--bd);padding:8px 10px;flex-shrink:0;max-height:160px;overflow-y:auto;}
+.blk-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;}
+.blk-title{font-size:11px;font-weight:700;color:var(--tx2);display:flex;align-items:center;gap:5px;}
+.blk-clr{font-size:10px;color:var(--red);cursor:pointer;font-weight:600;}
+.blk-item{display:flex;align-items:flex-start;padding:5px 3px;border-bottom:.5px solid var(--bd);gap:5px;border-radius:4px;transition:background .1s;}
+.blk-item:hover{background:var(--bg);}
+.blk-item:last-child{border:none;}
+.bdot{width:8px;height:8px;border-radius:50%;margin-top:3px;flex-shrink:0;}
+.blk-item-info{flex:1;min-width:0;}
+.blk-item-name{font-size:11px;font-weight:600;color:var(--tx);}
+.blk-item-meta{font-size:9px;color:var(--tx3);margin-top:1px;line-height:1.4;}
+.blk-item-del{width:20px;height:20px;border:none;background:none;cursor:pointer;color:var(--tx3);display:flex;align-items:center;justify-content:center;border-radius:3px;font-size:12px;flex-shrink:0;}
+.blk-item-del:hover{background:#FFEBEE;color:var(--red);}
 
-  /* MATRIX */
-  .matrix-card { background:var(--surface); border-radius:var(--radius); box-shadow:0 2px 8px rgba(0,0,0,.08); padding:20px; overflow-x:auto; grid-column:1/-1; }
-  .matrix-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; flex-wrap:wrap; gap:10px; }
-  .matrix-title { font-size:15px; font-weight:700; color:var(--brand-dark); }
-  .legend { display:flex; gap:14px; flex-wrap:wrap; }
-  .legend-item { display:flex; align-items:center; gap:5px; font-size:12px; color:var(--muted); }
-  .legend-dot { width:14px; height:14px; border-radius:3px; }
+/* bottom bar */
+.bot-bar{border-top:1px solid var(--bd);padding:9px 10px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:var(--bg);}
+.sel-info{font-size:11px;color:var(--tx2);}
+.sel-info b{color:var(--tx);font-weight:700;}
+.bbtns{display:flex;gap:6px;}
+.btn-ico{width:30px;height:30px;border:1px solid var(--bd);border-radius:6px;background:var(--bg2);cursor:pointer;color:var(--tx2);display:flex;align-items:center;justify-content:center;font-size:13px;}
+.btn-ico:hover{background:var(--bd);}
+.btn-ico:disabled{opacity:.3;cursor:not-allowed;}
+.btn-exp{padding:6px 11px;border:1px solid var(--cy);border-radius:6px;background:var(--bg2);color:var(--cy);font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:4px;}
+.btn-exp:hover{background:var(--cyl);}
+.btn-aply{padding:6px 14px;border:none;border-radius:6px;background:var(--blk);color:#fff;font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:4px;}
+.btn-aply:disabled{opacity:.3;cursor:not-allowed;}
+.btn-aply:not(:disabled):hover{background:var(--blk2);}
 
-  table { width:100%; border-collapse:collapse; min-width:500px; }
-  th, td { padding:9px 11px; text-align:center; border:1px solid #e0eaed; font-size:13px; }
-  thead th { background:var(--brand-light); color:var(--brand-dark); font-weight:700; font-size:12px; }
-  tbody th { background:#f5f9fa; color:var(--brand-dark); font-weight:700; font-size:12px; white-space:nowrap; text-align:left; padding-left:10px; }
-  .cell-ok   { background:var(--ok-bg);   color:var(--ok);   font-weight:700; }
-  .cell-warn { background:var(--warn-bg); color:var(--warn); font-weight:700; }
-  .cell-bad  { background:var(--bad-bg);  color:var(--bad);  font-weight:700; }
-  .cell-self { background:#f0f5f7; color:var(--muted); font-size:10px; }
+/* export */
+.exp-panel{display:none;border-top:1px solid var(--bd);padding:11px 14px;background:var(--bg);flex-shrink:0;}
+.exp-panel.on{display:block;}
+.exp-pre{background:var(--bg2);border:1px solid var(--bd);border-radius:6px;padding:9px;font-size:9px;font-family:'Consolas',monospace;color:var(--tx2);max-height:110px;overflow-y:auto;white-space:pre;line-height:1.5;}
 
-  /* MISSING DATA ALERT */
-  .alert { background:#fffde7; border:1px solid #ffe082; border-radius:8px; padding:12px 16px; font-size:12px; color:#795548; display:flex; gap:10px; align-items:flex-start; grid-column:1/-1; }
-  .alert-icon { font-size:18px; flex-shrink:0; }
+/* modals */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);align-items:center;justify-content:center;z-index:900;}
+.overlay.open{display:flex;}
+.modal-box{background:var(--bg2);border-radius:10px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.25);}
+.mhdr{background:var(--blk);padding:13px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--cy);}
+.mhdr-t{font-size:14px;font-weight:700;color:var(--cym);}
+.mclose{background:none;border:none;color:rgba(255,255,255,.45);cursor:pointer;font-size:16px;line-height:1;}
+.mclose:hover{color:#fff;}
+.mbody{padding:16px;overflow-y:auto;}
+.msect{background:var(--bg);border:1px solid var(--bd);border-radius:7px;padding:12px 14px;margin-bottom:12px;}
+.msect:last-child{margin-bottom:0;}
+.msect-title{font-size:10px;font-weight:700;color:var(--cy);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px;display:flex;align-items:center;gap:5px;}
+.fl{margin-bottom:10px;}
+.fl:last-child{margin-bottom:0;}
+.fl label{font-size:10px;font-weight:700;color:var(--tx2);display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px;}
+.fi{width:100%;padding:7px 9px;border:1px solid var(--bd);border-radius:6px;font-size:13px;color:var(--tx);background:var(--bg2);}
+.fi:focus{outline:none;border-color:var(--cy);}
+.cgrid{display:flex;gap:8px;flex-wrap:wrap;}
+.copt{width:24px;height:24px;border-radius:50%;cursor:pointer;border:3px solid transparent;}
+.copt.pk{border-color:var(--blk);}
+.sgrid{display:flex;gap:5px;}
+.sopt{font-size:11px;padding:5px 11px;border-radius:6px;cursor:pointer;border:1px solid var(--bd);background:var(--bg2);color:var(--tx2);font-weight:600;}
+.sopt.on{border-color:var(--cy);background:var(--cyl);color:var(--cyd);}
+.ss-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;}
+.sel-wrap{position:relative;}
+.fsel{width:100%;padding:6px 24px 6px 9px;border:1px solid var(--bd);border-radius:6px;font-size:12px;color:var(--tx);background:var(--bg2);appearance:none;cursor:pointer;}
+.fsel:focus{outline:none;border-color:var(--cy);}
+.sel-arr{position:absolute;right:7px;top:50%;transform:translateY(-50%);color:var(--tx3);font-size:11px;pointer-events:none;}
+.chk-row{display:flex;align-items:center;gap:7px;cursor:pointer;padding:5px 0;}
+.chk-row input{accent-color:var(--cy);width:14px;height:14px;cursor:pointer;flex-shrink:0;}
+.chk-row span{font-size:11px;font-weight:600;color:var(--tx2);}
+.mfoot{border-top:1px solid var(--bd);padding:11px 18px;display:flex;justify-content:flex-end;gap:8px;background:var(--bg);}
+.btn-cancel{background:var(--bg2);border:1px solid var(--bd);color:var(--tx2);padding:7px 14px;border-radius:6px;font-size:12px;cursor:pointer;font-weight:600;}
+.btn-cancel:hover{background:var(--bd);}
+.btn-save{background:var(--blk);border:none;color:#fff;padding:7px 18px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;}
+.btn-save:hover{background:var(--blk2);}
+.btn-qadd{background:var(--cym);border:none;color:#fff;padding:7px 13px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;}
+.btn-qadd:hover{background:var(--cyd);}
+.qm-list{padding:8px 16px;max-height:220px;overflow-y:auto;}
+.qm-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:.5px solid var(--bd);}
+.qm-row:last-child{border:none;}
+.qm-idx{width:26px;height:26px;border-radius:5px;background:var(--cyl);color:var(--cyd);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.qm-name{font-size:13px;color:var(--tx);flex:1;font-weight:500;}
+.qm-bays{font-size:11px;color:var(--tx3);}
+.qm-del{width:24px;height:24px;border:none;background:none;cursor:pointer;color:var(--red);font-size:13px;display:flex;align-items:center;justify-content:center;border-radius:4px;}
+.qm-del:hover{background:#FFEBEE;}
+.qadd-row{display:flex;gap:7px;padding:9px 16px;border-top:1px solid var(--bd);}
+.qinput{flex:1;padding:7px 9px;border:1px solid var(--bd);border-radius:6px;font-size:12px;color:var(--tx);background:var(--bg2);}
+.qinput:focus{outline:none;border-color:var(--cy);}
+.qinput-sm{width:64px;flex:none;}
 
-  /* FOOTER */
-  footer { text-align:center; padding:24px; color:var(--muted); font-size:11px; grid-column:1/-1; }
+/* toast */
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(14px);background:var(--blk);color:#fff;padding:8px 16px;border-radius:7px;font-size:12px;font-weight:600;opacity:0;transition:all .2s;z-index:1000;pointer-events:none;display:flex;align-items:center;gap:7px;white-space:nowrap;border-left:3px solid var(--cym);}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
-  @media (max-width:800px) {
-    .container { grid-template-columns:1fr; }
-    .matrix-card { grid-column:1; }
-    .alert { grid-column:1; }
-    footer { grid-column:1; }
-  }
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--bd);border-radius:4px;}
 </style>
 </head>
 <body>
 
-<div class="header">
-  <div class="header-icon">⚓</div>
-  <div>
-    <h1>IMDG Compatibility Navigator</h1>
-    <p>Matriz de Compatibilidade de Carga Perigosa · HXtos CY</p>
+<div class="topbar">
+  <i class="ti ti-building-warehouse tb-logo"></i>
+  <span class="tb-title">HX CY Planner</span>
+  <div class="tb-sep"></div>
+  <span class="tb-sub">Bloqueios Infraestruturais</span>
+  <div class="tb-spacer"></div>
+  <span class="tb-date" id="tbdate">18 de junho de 2026</span>
+</div>
+
+<div class="qbar">
+  <span class="qbar-label"><i class="ti ti-map-pin"></i>Quadra:</span>
+  <div class="qdrop-wrap">
+    <select class="qdrop" id="qsel" onchange="changeQ(this.value)"><option value="q1" selected="">Q1</option><option value="q2">Q2</option><option value="q3">Q3</option><option value="q4">Q4</option></select>
+    <i class="ti ti-chevron-down qdrop-arrow"></i>
   </div>
-  <div class="header-badge">
-    <strong>IMDG Code</strong>
-    Ed. 41-22
+  <button class="qbtn" onclick="openQM()"><i class="ti ti-settings"></i>Gerenciar quadras</button>
+  <span class="qinfo" id="qinfo">18 bays</span>
+  <div class="mode-group">
+    <button class="mbtn on" id="mb-s" onclick="setMode(&#39;s&#39;)"><i class="ti ti-lasso"></i>Mouse stroke</button>
+    <button class="mbtn" id="mb-v" onclick="setMode(&#39;v&#39;)"><i class="ti ti-eye"></i>Visualizar</button>
   </div>
 </div>
 
-<div class="container" id="mainGrid">
+<div class="main">
+  <div class="yard-col" id="yard-col">
+    <div class="sec-title"><i class="ti ti-grid-dots"></i><span id="yard-title">Mapa de slots — Q1</span></div>
+    <div class="leg-row" id="leg-row"><div class="leg"><div class="leg-box" style="background:var(--cym);border:1px solid var(--cyd)"></div>Ocupado</div><div class="leg"><div class="leg-box" style="background:transparent;border:1px dashed var(--bd)"></div>Livre</div><div class="leg"><div class="leg-box" style="background:#1E88E5CC;border:1px solid #1E88E5"></div>Monitoramento Reefer</div><div class="leg"><div class="leg-box" style="background:#E53935CC;border:1px solid #E53935"></div>Manutenção</div></div>
+    <div id="bays-ct"><div class="bay-card"><div class="bay-hdr"><div class="bay-lbl">Q1 · <span>BAY 05 · Origem</span></div><div class="bay-hint">Desenhe sobre os containers para selecionar</div></div><div class="grid-scroll"><table class="gtbl"><thead><tr><th></th><th class="gh">A</th><th class="gh">B</th><th class="gh">C</th><th class="gh">D</th><th class="gh">E</th><th class="gh">F</th><th class="gh">G</th><th class="gh">H</th><th class="gh">I</th><th class="gh">J</th><th class="gh">K</th></tr></thead><tbody><tr><td class="grl">5</td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;" title=""><div class="slot occ" style="" data-cid="q1|bay05|5|C"><div class="si"><span class="sc">KHH 2200</span><span class="ss-sub">1.5</span></div></div></td><td style="padding:2px;" title=""><div class="slot occ" style="" data-cid="q1|bay05|5|D"><div class="si"><span class="sc">KHH 2200</span><span class="ss-sub">1.5</span></div></div></td><td style="padding:2px;" title=""><div class="slot occ" style="" data-cid="q1|bay05|5|E"><div class="si"><span class="sc">KHH 2200</span><span class="ss-sub">1.5</span></div></div></td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;"><div class="slot empty"></div></td></tr><tr><td class="grl">4</td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;" title=""><div class="slot occ" style="" data-cid="q1|bay05|4|B"><div class="si"><span class="sc">KHH 2200</span><span class="ss-sub">1.5</span></div></div></td><td style="padding:2px;" title=""><div class="slot occ" style="" data-cid="q1|bay05|4|C"><div class="si"><span class="sc">KHH 2200</span><span class="ss-sub">1.5</span></div></div></td><td style="padding:2px;" title=""><div class="slot occ" style="" data-cid="q1|bay05|4|D"><div class="si"><span class="sc">KHH 2200</span><span class="ss-sub">1.5</span></div></div></td><td style="padding:2px;" title=""><div class="slot occ" style="" data-cid="q1|bay05|4|E"><div class="si"><span class="sc">KHH 2200</span><span class="ss-sub">1.5</span></div></div></td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;"><div class="slot empty"></div></td></tr><tr><td class="grl">3</td><td style="padding:2px;" title="Monitoramento Reefer · Homens: Sim · Reefer: Ativo · Protegido · Limit: 3"><div class="slot blk" style="background:#1E88E5CC;border:2px solid #1E88E5;" data-cid="q1|bay05|3|A"><div class="si"><span class="sc" style="font-size:11px;">❄</span></div></div></td><td style="padding:2px;" title=""><div class="slot occ" style="" data-cid="q1|bay05|3|B"><div class="si"><span class="sc">KHH 2200</span><span class="ss-sub">1.5</span></div></div></td><td style="padding:2px;" title=""><div class="slot occ" style="" data-cid="q1|bay05|3|C"><div class="si"><span class="sc">KHH 2200</span><span class="ss-sub">1.5</span></div></div></td><td style="padding:2px;" title=""><div class="slot occ" style="" data-cid="q1|bay05|3|D"><div class="si"><span class="sc">KHH 2200</span><span class="ss-sub">1.5</span></div></div></td><td style="padding:2px;" title=""><div class="slot occ" style="" data-cid="q1|bay05|3|E"><div class="si"><span class="sc">KHH 2200</span><span class="ss-sub">1.5</span></div></div></td><td style="padding:2px;" title=""><div class="slot occ" style="" data-cid="q1|bay05|3|F"><div class="si"><span class="sc">KHH 2200</span><span class="ss-sub">1.5</span></div></div></td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;"><div class="slot empty"></div></td></tr><tr><td class="grl">2</td><td style="padding:2px;" title="Monitoramento Reefer · Homens: Sim · Reefer: Ativo · Protegido · Limit: 3"><div class="slot blk" style="background:#1E88E5CC;border:2px solid #1E88E5;" data-cid="q1|bay05|2|A"><div class="si"><span class="sc" style="font-size:11px;">❄</span></div></div></td><td style="padding:2px;" title=""><div class="slot occ" style="" data-cid="q1|bay05|2|B"><div class="si"><span class="sc">KHH 2200</span><span class="ss-sub">1.5</span></div></div></td><td style="padding:2px;" title=""><div class="slot occ" style="" data-cid="q1|bay05|2|C"><div class="si"><span class="sc">KHH 2200</span><span class="ss-sub">1.5</span></div></div></td><td style="padding:2px;" title=""><div class="slot occ" style="" data-cid="q1|bay05|2|D"><div class="si"><span class="sc">KHH 2200</span><span class="ss-sub">1.5</span></div></div></td><td style="padding:2px;" title=""><div class="slot occ" style="" data-cid="q1|bay05|2|E"><div class="si"><span class="sc">KHH 2200</span><span class="ss-sub">1.5</span></div></div></td><td style="padding:2px;" title=""><div class="slot occ" style="" data-cid="q1|bay05|2|F"><div class="si"><span class="sc">KHH 2200</span><span class="ss-sub">1.5</span></div></div></td><td style="padding:2px;" title=""><div class="slot occ" style="" data-cid="q1|bay05|2|G"><div class="si"><span class="sc">KHH 2200</span><span class="ss-sub">1.5</span></div></div></td><td style="padding:2px;" title=""><div class="slot occ" style="" data-cid="q1|bay05|2|H"><div class="si"><span class="sc">KHH 2200</span><span class="ss-sub">1.5</span></div></div></td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;"><div class="slot empty"></div></td></tr><tr><td class="grl">1</td><td style="padding:2px;" title="Monitoramento Reefer · Homens: Sim · Reefer: Ativo · Protegido · Limit: 3"><div class="slot blk" style="background:#1E88E5CC;border:2px solid #1E88E5;" data-cid="q1|bay05|1|A"><div class="si"><span class="sc" style="font-size:11px;">❄</span></div></div></td><td style="padding:2px;" title=""><div class="slot occ" style="" data-cid="q1|bay05|1|B"><div class="si"><span class="sc">KHH 2200</span><span class="ss-sub">1.5</span></div></div></td><td style="padding:2px;" title=""><div class="slot occ" style="" data-cid="q1|bay05|1|C"><div class="si"><span class="sc">KHH 2200</span><span class="ss-sub">1.5</span></div></div></td><td style="padding:2px;" title=""><div class="slot occ" style="" data-cid="q1|bay05|1|D"><div class="si"><span class="sc">KHH 2200</span><span class="ss-sub">1.5</span></div></div></td><td style="padding:2px;" title=""><div class="slot occ" style="" data-cid="q1|bay05|1|E"><div class="si"><span class="sc">KHH 2200</span><span class="ss-sub">1.5</span></div></div></td><td style="padding:2px;" title=""><div class="slot occ" style="" data-cid="q1|bay05|1|F"><div class="si"><span class="sc">KHH 2200</span><span class="ss-sub">1.5</span></div></div></td><td style="padding:2px;" title=""><div class="slot occ" style="" data-cid="q1|bay05|1|G"><div class="si"><span class="sc">KHH 2200</span><span class="ss-sub">1.5</span></div></div></td><td style="padding:2px;" title=""><div class="slot occ" style="" data-cid="q1|bay05|1|H"><div class="si"><span class="sc">KHH 2200</span><span class="ss-sub">1.5</span></div></div></td><td style="padding:2px;" title=""><div class="slot occ" style="" data-cid="q1|bay05|1|I"><div class="si"><span class="sc">KHH 2200</span><span class="ss-sub">1.5</span></div></div></td><td style="padding:2px;" title=""><div class="slot occ" style="" data-cid="q1|bay05|1|J"><div class="si"><span class="sc">KHH 2200</span><span class="ss-sub">1.5</span></div></div></td><td style="padding:2px;"><div class="slot empty"></div></td></tr></tbody></table></div><div class="bay-foot"><i class="ti ti-chevron-right"></i>HSUQO81295</div></div><div class="bay-card"><div class="bay-hdr"><div class="bay-lbl">Q1 · <span>BAY 07 · Destino</span></div><div class="bay-hint">Desenhe sobre os containers para selecionar</div></div><div class="grid-scroll"><table class="gtbl"><thead><tr><th></th><th class="gh">A</th><th class="gh">B</th><th class="gh">C</th><th class="gh">D</th><th class="gh">E</th><th class="gh">F</th><th class="gh">G</th><th class="gh">H</th><th class="gh">I</th><th class="gh">J</th><th class="gh">K</th></tr></thead><tbody><tr><td class="grl">5</td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;"><div class="slot empty"></div></td></tr><tr><td class="grl">4</td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;" title="Manutenção · Homens: Sim · Reefer: Inativo · Protegido · Limit: 5 · Fechada"><div class="slot blk" style="background:#E53935CC;border:2px solid #E53935;" data-cid="q1|bay07|4|D"><div class="si"><span class="sc" style="font-size:11px;">🔒</span></div></div></td><td style="padding:2px;" title="Manutenção · Homens: Sim · Reefer: Inativo · Protegido · Limit: 5 · Fechada"><div class="slot blk" style="background:#E53935CC;border:2px solid #E53935;" data-cid="q1|bay07|4|E"><div class="si"><span class="sc" style="font-size:11px;">🔒</span></div></div></td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;"><div class="slot empty"></div></td></tr><tr><td class="grl">3</td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;" title="Manutenção · Homens: Sim · Reefer: Inativo · Protegido · Limit: 5 · Fechada"><div class="slot blk" style="background:#E53935CC;border:2px solid #E53935;" data-cid="q1|bay07|3|C"><div class="si"><span class="sc" style="font-size:11px;">🔒</span></div></div></td><td style="padding:2px;" title="Manutenção · Homens: Sim · Reefer: Inativo · Protegido · Limit: 5 · Fechada"><div class="slot blk" style="background:#E53935CC;border:2px solid #E53935;" data-cid="q1|bay07|3|D"><div class="si"><span class="sc" style="font-size:11px;">🔒</span></div></div></td><td style="padding:2px;" title="Manutenção · Homens: Sim · Reefer: Inativo · Protegido · Limit: 5 · Fechada"><div class="slot blk" style="background:#E53935CC;border:2px solid #E53935;" data-cid="q1|bay07|3|E"><div class="si"><span class="sc" style="font-size:11px;">🔒</span></div></div></td><td style="padding:2px;" title="Manutenção · Homens: Sim · Reefer: Inativo · Protegido · Limit: 5 · Fechada"><div class="slot blk" style="background:#E53935CC;border:2px solid #E53935;" data-cid="q1|bay07|3|F"><div class="si"><span class="sc" style="font-size:11px;">🔒</span></div></div></td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;" title="Manutenção · Homens: Sim · Reefer: Inativo · Protegido · Limit: 5 · Fechada"><div class="slot blk" style="background:#E53935CC;border:2px solid #E53935;" data-cid="q1|bay07|3|H"><div class="si"><span class="sc" style="font-size:11px;">🔒</span></div></div></td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;"><div class="slot empty"></div></td></tr><tr><td class="grl">2</td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;" title="Manutenção · Homens: Sim · Reefer: Inativo · Protegido · Limit: 5 · Fechada"><div class="slot blk" style="background:#E53935CC;border:2px solid #E53935;" data-cid="q1|bay07|2|B"><div class="si"><span class="sc" style="font-size:11px;">🔒</span></div></div></td><td style="padding:2px;" title="Manutenção · Homens: Sim · Reefer: Inativo · Protegido · Limit: 5 · Fechada"><div class="slot blk" style="background:#E53935CC;border:2px solid #E53935;" data-cid="q1|bay07|2|C"><div class="si"><span class="sc" style="font-size:11px;">🔒</span></div></div></td><td style="padding:2px;" title="Manutenção · Homens: Sim · Reefer: Inativo · Protegido · Limit: 5 · Fechada"><div class="slot blk" style="background:#E53935CC;border:2px solid #E53935;" data-cid="q1|bay07|2|D"><div class="si"><span class="sc" style="font-size:11px;">🔒</span></div></div></td><td style="padding:2px;" title="Manutenção · Homens: Sim · Reefer: Inativo · Protegido · Limit: 5 · Fechada"><div class="slot blk" style="background:#E53935CC;border:2px solid #E53935;" data-cid="q1|bay07|2|E"><div class="si"><span class="sc" style="font-size:11px;">🔒</span></div></div></td><td style="padding:2px;" title="Manutenção · Homens: Sim · Reefer: Inativo · Protegido · Limit: 5 · Fechada"><div class="slot blk" style="background:#E53935CC;border:2px solid #E53935;" data-cid="q1|bay07|2|F"><div class="si"><span class="sc" style="font-size:11px;">🔒</span></div></div></td><td style="padding:2px;" title="Manutenção · Homens: Sim · Reefer: Inativo · Protegido · Limit: 5 · Fechada"><div class="slot blk" style="background:#E53935CC;border:2px solid #E53935;" data-cid="q1|bay07|2|G"><div class="si"><span class="sc" style="font-size:11px;">🔒</span></div></div></td><td style="padding:2px;" title="Manutenção · Homens: Sim · Reefer: Inativo · Protegido · Limit: 5 · Fechada"><div class="slot blk" style="background:#E53935CC;border:2px solid #E53935;" data-cid="q1|bay07|2|H"><div class="si"><span class="sc" style="font-size:11px;">🔒</span></div></div></td><td style="padding:2px;" title="Manutenção · Homens: Sim · Reefer: Inativo · Protegido · Limit: 5 · Fechada"><div class="slot blk" style="background:#E53935CC;border:2px solid #E53935;" data-cid="q1|bay07|2|I"><div class="si"><span class="sc" style="font-size:11px;">🔒</span></div></div></td><td style="padding:2px;"><div class="slot empty"></div></td><td style="padding:2px;"><div class="slot empty"></div></td></tr><tr><td class="grl">1</td><td style="padding:2px;" title="Manutenção · Homens: Sim · Reefer: Inativo · Protegido · Limit: 5 · Fechada"><div class="slot blk" style="background:#E53935CC;border:2px solid #E53935;" data-cid="q1|bay07|1|A"><div class="si"><span class="sc" style="font-size:11px;">🔒</span></div></div></td><td style="padding:2px;" title="Manutenção · Homens: Sim · Reefer: Inativo · Protegido · Limit: 5 · Fechada"><div class="slot blk" style="background:#E53935CC;border:2px solid #E53935;" data-cid="q1|bay07|1|B"><div class="si"><span class="sc" style="font-size:11px;">🔒</span></div></div></td><td style="padding:2px;" title="Manutenção · Homens: Sim · Reefer: Inativo · Protegido · Limit: 5 · Fechada"><div class="slot blk" style="background:#E53935CC;border:2px solid #E53935;" data-cid="q1|bay07|1|C"><div class="si"><span class="sc" style="font-size:11px;">🔒</span></div></div></td><td style="padding:2px;" title="Manutenção · Homens: Sim · Reefer: Inativo · Protegido · Limit: 5 · Fechada"><div class="slot blk" style="background:#E53935CC;border:2px solid #E53935;" data-cid="q1|bay07|1|D"><div class="si"><span class="sc" style="font-size:11px;">🔒</span></div></div></td><td style="padding:2px;" title="Manutenção · Homens: Sim · Reefer: Inativo · Protegido · Limit: 5 · Fechada"><div class="slot blk" style="background:#E53935CC;border:2px solid #E53935;" data-cid="q1|bay07|1|E"><div class="si"><span class="sc" style="font-size:11px;">🔒</span></div></div></td><td style="padding:2px;" title="Manutenção · Homens: Sim · Reefer: Inativo · Protegido · Limit: 5 · Fechada"><div class="slot blk" style="background:#E53935CC;border:2px solid #E53935;" data-cid="q1|bay07|1|F"><div class="si"><span class="sc" style="font-size:11px;">🔒</span></div></div></td><td style="padding:2px;" title="Manutenção · Homens: Sim · Reefer: Inativo · Protegido · Limit: 5 · Fechada"><div class="slot blk" style="background:#E53935CC;border:2px solid #E53935;" data-cid="q1|bay07|1|G"><div class="si"><span class="sc" style="font-size:11px;">🔒</span></div></div></td><td style="padding:2px;" title="Manutenção · Homens: Sim · Reefer: Inativo · Protegido · Limit: 5 · Fechada"><div class="slot blk" style="background:#E53935CC;border:2px solid #E53935;" data-cid="q1|bay07|1|H"><div class="si"><span class="sc" style="font-size:11px;">🔒</span></div></div></td><td style="padding:2px;" title="Manutenção · Homens: Sim · Reefer: Inativo · Protegido · Limit: 5 · Fechada"><div class="slot blk" style="background:#E53935CC;border:2px solid #E53935;" data-cid="q1|bay07|1|I"><div class="si"><span class="sc" style="font-size:11px;">🔒</span></div></div></td><td style="padding:2px;" title="Manutenção · Homens: Sim · Reefer: Inativo · Protegido · Limit: 5 · Fechada"><div class="slot blk" style="background:#E53935CC;border:2px solid #E53935;" data-cid="q1|bay07|1|J"><div class="si"><span class="sc" style="font-size:11px;">🔒</span></div></div></td><td style="padding:2px;"><div class="slot empty"></div></td></tr></tbody></table></div><div class="bay-foot"><i class="ti ti-chevron-right"></i>HSUQO81297</div></div></div>
+    <div class="exp-panel" id="exp-panel">
+      <div style="font-size:11px;font-weight:700;color:var(--tx2);margin-bottom:7px;display:flex;align-items:center;gap:5px;"><i class="ti ti-download"></i>Exportação JSON</div>
+      <div class="exp-pre" id="exp-pre"></div>
+    </div>
+  </div>
 
-  <!-- SIDEBAR -->
   <div class="sidebar">
-    <div class="sidebar-header"><h2>🏷 Classes IMDG</h2></div>
-    <div class="search-box">
-      <input type="text" id="searchInput" placeholder="Buscar classe..." oninput="filterClasses()">
+    <div class="sb-hdr">
+      <i class="ti ti-adjustments-horizontal" style="font-size:15px;color:#fff;opacity:.8;"></i>
+      <span class="sb-hdr-title">Parâmetros de Bloqueio</span>
+      <button class="sb-add-btn" onclick="openParamModal()"><i class="ti ti-plus"></i>Novo</button>
     </div>
-    <div class="class-list" id="classList"></div>
-  </div>
 
-  <!-- PANEL -->
-  <div class="panel" id="panel">
-    <div class="card">
-      <div class="empty">
-        <div class="empty-icon">👈</div>
-        <p>Selecione uma classe para ver compatibilidades</p>
+    <div class="stats-row">
+      <div class="stat"><div class="stat-n" id="st-p">2</div><div class="stat-l">Parâmetros</div></div>
+      <div class="stat"><div class="stat-n" id="st-b">28</div><div class="stat-l">Slots bloq.</div></div>
+      <div class="stat"><div class="stat-n" id="st-s">0</div><div class="stat-l">Selecionados</div></div>
+    </div>
+
+    <div class="abar on" id="abar">
+      <div class="abar-top"><i class="ti ti-lasso" style="font-size:12px;"></i>Parâmetro ativo</div>
+      <div class="abar-name"><span class="adot" id="ab-dot" style="background: rgb(229, 57, 53);"></span><span id="ab-name">Manutenção</span></div>
+      <div class="abar-tip">Desenhe sobre os containers e clique <strong>Aplicar</strong>.</div>
+    </div>
+
+    <div class="sb-sect">Parâmetros</div>
+    <div class="sb-scroll" id="param-list"><div class="pc" onclick="selParam(&#39;p1781792041324&#39;)">
+      <div class="pc-top">
+        <div class="pdot" style="background:#1E88E5"></div>
+        <span class="pc-name">Monitoramento Reefer</span>
+        <div class="pc-acts">
+          <button class="pc-btn" onclick="editParam(event,&#39;p1781792041324&#39;)" title="Editar"><i class="ti ti-edit"></i></button>
+          <button class="pc-btn" onclick="deleteParam(event,&#39;p1781792041324&#39;)" title="Excluir"><i class="ti ti-trash"></i></button>
+        </div>
+      </div>
+      <div class="pc-desc">Unidades para PTI</div>
+      <div class="pc-scopes"><span class="pcs slot">Slot 1TEU</span><span class="pcs row">Row</span></div>
+      <div class="ss-badges"><span class="ss-badge" style="background:#1E88E518;color:#1E88E5;border:1px solid #1E88E544;">Homens: Sim</span><span class="ss-badge" style="background:#00897B18;color:#00897B;border:1px solid #00897B44;">Reefer: Ativo</span><span class="ss-badge" style="background:#8E24AA18;color:#8E24AA;border:1px solid #8E24AA44;">Protegido</span><span class="ss-badge" style="background:#FB8C0018;color:#FB8C00;border:1px solid #FB8C0044;">Limit: 3</span></div>
+    </div><div class="pc on" onclick="selParam(&#39;p1781792099069&#39;)">
+      <div class="pc-top">
+        <div class="pdot" style="background:#E53935"></div>
+        <span class="pc-name">Manutenção</span>
+        <div class="pc-acts">
+          <button class="pc-btn" onclick="editParam(event,&#39;p1781792099069&#39;)" title="Editar"><i class="ti ti-edit"></i></button>
+          <button class="pc-btn" onclick="deleteParam(event,&#39;p1781792099069&#39;)" title="Excluir"><i class="ti ti-trash"></i></button>
+        </div>
+      </div>
+      <div class="pc-desc">Reforma de Piso</div>
+      <div class="pc-scopes"><span class="pcs row">Row</span><span class="pcs tier">Tier</span></div>
+      <div class="ss-badges"><span class="ss-badge" style="background:#1E88E518;color:#1E88E5;border:1px solid #1E88E544;">Homens: Sim</span><span class="ss-badge" style="background:#00897B18;color:#00897B;border:1px solid #00897B44;">Reefer: Inativo</span><span class="ss-badge" style="background:#8E24AA18;color:#8E24AA;border:1px solid #8E24AA44;">Protegido</span><span class="ss-badge" style="background:#FB8C0018;color:#FB8C00;border:1px solid #FB8C0044;">Limit: 5</span><span class="ss-badge" style="background:#E5393518;color:#E53935;border:1px solid #E5393544;">Fechada</span></div>
+    </div></div>
+
+    <div class="blk-sect" id="blk-sect" style="display: block;">
+      <div class="blk-hdr">
+        <span class="blk-title"><i class="ti ti-stack-2" style="font-size:12px;"></i>Aplicações — <span id="blk-qlabel" style="color:var(--cy);">Q1</span></span>
+        <span class="blk-clr" onclick="clearAll()">Limpar tudo</span>
+      </div>
+      <div id="blk-items"><div class="blk-item">
+      <span class="bdot" style="background:#E53935;margin-top:3px;"></span>
+      <div class="blk-item-info">
+        <div class="blk-item-name">Manutenção</div>
+        <div class="blk-item-meta">25 slot(s) · bay07 · Homens: Sim · Reefer: Inativo · Protegido · Limit: 5 · Fechada — 11:15</div>
+      </div>
+      <button class="blk-item-del" onclick="deleteApplication(&#39;h1781792108534&#39;)" title="Remover"><i class="ti ti-trash"></i></button>
+    </div><div class="blk-item">
+      <span class="bdot" style="background:#1E88E5;margin-top:3px;"></span>
+      <div class="blk-item-info">
+        <div class="blk-item-name">Monitoramento Reefer</div>
+        <div class="blk-item-meta">3 slot(s) · bay05 · Homens: Sim · Reefer: Ativo · Protegido · Limit: 3 — 11:14</div>
+      </div>
+      <button class="blk-item-del" onclick="deleteApplication(&#39;h1781792048281&#39;)" title="Remover"><i class="ti ti-trash"></i></button>
+    </div></div>
+    </div>
+
+    <div class="bot-bar">
+      <div class="sel-info" id="sel-info">Nenhuma seleção</div>
+      <div class="bbtns">
+        <button class="btn-ico" id="btn-cls" onclick="clearSel()" title="Cancelar seleção"><i class="ti ti-x"></i></button>
+        <button class="btn-ico" id="btn-undo" onclick="undoLast()" title="Desfazer (Ctrl+Z)"><i class="ti ti-arrow-back-up"></i></button>
+        <button class="btn-exp" onclick="toggleExp()"><i class="ti ti-download"></i>Export</button>
+        <button class="btn-aply" id="btn-aply" onclick="applyBlock()" disabled=""><i class="ti ti-lock"></i>Aplicar</button>
       </div>
     </div>
   </div>
-
-  <!-- MISSING DATA ALERT -->
-  <div class="alert">
-    <span class="alert-icon">⚠️</span>
-    <div>
-      <strong>Atenção – Limitações desta ferramenta:</strong>
-      As compatibilidades refletem as regras gerais da Tabela 7.2.4 do IMDG Code Ed. 41-22. 
-      Subclasses de Classe 1 (1.1–1.6) e divisões de Classe 2 (2.1/2.2/2.3) possuem regras específicas mais restritivas não expandidas aqui. 
-      Materiais Radioativos (Classe 7) e Substâncias Perigosas ao Meio Ambiente podem ter requisitos adicionais. 
-      Consulte sempre o IMDG Code e o DGS (Dangerous Goods Segregation) antes de carregar.
-    </div>
-  </div>
-
-  <!-- MATRIX -->
-  <div class="matrix-card">
-    <div class="matrix-header">
-      <span class="matrix-title">📊 Matriz de Segregação Completa</span>
-      <div class="legend">
-        <div class="legend-item"><div class="legend-dot" style="background:var(--ok-bg);border:1px solid var(--ok-border)"></div>✅ Compatível</div>
-        <div class="legend-item"><div class="legend-dot" style="background:var(--warn-bg);border:1px solid var(--warn-border)"></div>⚠️ Restrito / Segregar</div>
-        <div class="legend-item"><div class="legend-dot" style="background:var(--bad-bg);border:1px solid var(--bad-border)"></div>🚫 Proibido</div>
-      </div>
-    </div>
-    <table>
-      <thead id="matrixHead"></thead>
-      <tbody id="matrixBody"></tbody>
-    </table>
-  </div>
-
-  <footer>
-    HXtos CY · IMDG Compatibility Navigator · Baseado no IMDG Code Edição 41-22 · Para uso operacional, consulte sempre o documento oficial.
-  </footer>
 </div>
+
+<!-- SVG lasso -->
+<svg id="lasso-svg" xmlns="http://www.w3.org/2000/svg">
+  <polyline id="lasso-line" fill="rgba(0,172,193,0.08)" stroke="#212121" stroke-width="1.5" stroke-dasharray="5,4" points="" style="display: none;"></polyline>
+</svg>
+
+<!-- Modal: Parâmetro -->
+<div class="overlay" id="param-overlay">
+  <div class="modal-box" style="width:430px;max-height:92vh;display:flex;flex-direction:column;">
+    <div class="mhdr">
+      <span class="mhdr-t" id="param-modal-title">Novo Parâmetro</span>
+      <button class="mclose" onclick="closeParamModal()"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="mbody" style="flex:1;overflow-y:auto;">
+
+      <div class="msect">
+        <div class="msect-title"><i class="ti ti-tag"></i>Identificação</div>
+        <div class="fl"><label>Nome do parâmetro</label>
+          <input class="fi" id="pm-name" placeholder="Ex: Manutenção, Reefer, Estrutural…">
+        </div>
+        <div class="fl"><label>Descrição</label>
+          <input class="fi" id="pm-desc" placeholder="Detalhe ou motivo do bloqueio">
+        </div>
+        <div class="fl"><label>Cor</label>
+          <div class="cgrid" id="pm-cgrid"><div class="copt pk" style="background:#E53935" onclick="pickColor(&#39;#E53935&#39;)"></div><div class="copt" style="background:#FB8C00" onclick="pickColor(&#39;#FB8C00&#39;)"></div><div class="copt" style="background:#F9A825" onclick="pickColor(&#39;#F9A825&#39;)"></div><div class="copt" style="background:#43A047" onclick="pickColor(&#39;#43A047&#39;)"></div><div class="copt" style="background:#00ACC1" onclick="pickColor(&#39;#00ACC1&#39;)"></div><div class="copt" style="background:#1E88E5" onclick="pickColor(&#39;#1E88E5&#39;)"></div><div class="copt" style="background:#8E24AA" onclick="pickColor(&#39;#8E24AA&#39;)"></div><div class="copt" style="background:#D81B60" onclick="pickColor(&#39;#D81B60&#39;)"></div><div class="copt" style="background:#546E7A" onclick="pickColor(&#39;#546E7A&#39;)"></div><div class="copt" style="background:#00695C" onclick="pickColor(&#39;#00695C&#39;)"></div></div>
+        </div>
+        <div class="fl"><label>Escopo de aplicação</label>
+          <div class="sgrid" id="pm-scopes">
+            <span class="sopt" data-s="slot">Slot</span>
+            <span class="sopt on" data-s="row">Row</span>
+            <span class="sopt on" data-s="tier">Tier</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="msect">
+        <div class="msect-title"><i class="ti ti-stack-2"></i>Status da Pilha</div>
+        <div class="ss-grid">
+          <div class="fl">
+            <label>Homens Trabalhando</label>
+            <div class="sel-wrap">
+              <select class="fsel" id="pm-men">
+                <option value="">Não Alterar</option>
+                <option value="yes">Sim</option>
+                <option value="no">Não</option>
+              </select>
+              <i class="ti ti-chevron-down sel-arr"></i>
+            </div>
+          </div>
+          <div class="fl">
+            <label>Status Reefer</label>
+            <div class="sel-wrap">
+              <select class="fsel" id="pm-reefer">
+                <option value="">Não Alterar</option>
+                <option value="active">Ativo</option>
+                <option value="inactive">Inativo</option>
+              </select>
+              <i class="ti ti-chevron-down sel-arr"></i>
+            </div>
+          </div>
+          <div class="fl">
+            <label>Status de Proteção</label>
+            <div class="sel-wrap">
+              <select class="fsel" id="pm-protect">
+                <option value="">Não Alterar</option>
+                <option value="protected">Protegido</option>
+                <option value="not_protected">Não Protegido</option>
+              </select>
+              <i class="ti ti-chevron-down sel-arr"></i>
+            </div>
+          </div>
+          <div class="fl">
+            <label>Limite de Empilhamento</label>
+            <div class="sel-wrap">
+              <select class="fsel" id="pm-limit">
+                <option value="">Não Alterar</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+              <i class="ti ti-chevron-down sel-arr"></i>
+            </div>
+          </div>
+          <div class="fl">
+            <label>Status da Pilha</label>
+            <div class="sel-wrap">
+              <select class="fsel" id="pm-status">
+                <option value="">Não Alterar</option>
+                <option value="open">Aberta</option>
+                <option value="closed">Fechada</option>
+                <option value="reserved">Reservada</option>
+              </select>
+              <i class="ti ti-chevron-down sel-arr"></i>
+            </div>
+          </div>
+          <div class="fl" style="display:flex;align-items:flex-end;">
+            <label class="chk-row">
+              <input type="checkbox" id="pm-highcube">
+              <span>Bloquear High Cubes</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="mfoot">
+      <button class="btn-cancel" onclick="closeParamModal()">Cancelar</button>
+      <button class="btn-save" onclick="saveParam()">Salvar parâmetro</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Quadras -->
+<div class="overlay" id="qm-overlay">
+  <div class="modal-box" style="width:380px;">
+    <div class="mhdr">
+      <span class="mhdr-t">Gerenciar Quadras</span>
+      <button class="mclose" onclick="closeQM()"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="qm-list" id="qm-list"></div>
+    <div class="qadd-row">
+      <input class="qinput" id="qm-name" placeholder="Nome (ex: Q5, Heap Area…)" onkeydown="if(event.key===&#39;Enter&#39;)addQ()">
+      <input class="qinput qinput-sm" id="qm-bays" type="number" min="1" max="40" value="10">
+      <button class="btn-qadd" onclick="addQ()"><i class="ti ti-plus"></i>Adicionar</button>
+    </div>
+    <div class="mfoot"><button class="btn-cancel" onclick="closeQM()">Fechar</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><i class="ti ti-check" style="color:var(--cym);font-size:14px;"></i>25 slot(s) bloqueado(s) · Homens: Sim · Reefer: Inativo · Protegido · Limit: 5 · Fechada</div>
 
 <script>
-// ─────────────────────────────────────────────
-// DATA (IMDG Code Ed.41 Table 7.2.4)
-// Classes com nomes corretos, subclasses e notas
-// ─────────────────────────────────────────────
-const classes = [
-  {
-    id: 1, code:"1", name:"Explosivos",
-    desc:"Substâncias e artigos com risco de explosão em massa, projeção ou incêndio.",
-    ref:"IMDG 2.1",
-    subclasses:[
-      {id:"1.1", label:"Risco de explosão em massa"},
-      {id:"1.2", label:"Risco de projeção, sem explosão em massa"},
-      {id:"1.3", label:"Risco de fogo e pequeno risco de explosão"},
-      {id:"1.4", label:"Risco menor — sem efeito fora do volume"},
-      {id:"1.5", label:"Muito insensível com risco de explosão em massa"},
-      {id:"1.6", label:"Extremamente insensível, sem risco de explosão em massa"},
-    ],
-    notes:"Subclasses 1.1, 1.2 e 1.3 são incompatíveis entre si em diversos grupos de compatibilidade. Classe 1 requer Certificado de Segregação específico.",
-    prohibited:[2,3,4,5,6,7,8,9],
-    restricted:[],
-    compatible:[]
-  },
-  {
-    id: 2, code:"2", name:"Gases",
-    desc:"Gases comprimidos, liquefeitos ou dissolvidos sob pressão.",
-    ref:"IMDG 2.2",
-    subclasses:[
-      {id:"2.1", label:"Gases inflamáveis (ex: propano, hidrogênio)"},
-      {id:"2.2", label:"Gases não-inflamáveis, não-tóxicos (ex: nitrogênio, CO₂)"},
-      {id:"2.3", label:"Gases tóxicos (ex: cloro, amônia)"},
-    ],
-    notes:"Gases tóxicos (2.3) possuem restrições adicionais de segregação. Aerossóis são tratados como Classe 2.",
-    prohibited:[1,8],
-    restricted:[3,4,5,6,7,9],
-    compatible:[]
-  },
-  {
-    id: 3, code:"3", name:"Líquidos Inflamáveis",
-    desc:"Líquidos com ponto de fulgor ≤ 60 °C ou transportados acima do ponto de fulgor.",
-    ref:"IMDG 2.3",
-    subclasses:[
-      {id:"I",   label:"Pf < 23 °C, ponto de ebulição ≤ 35 °C (ex: éter, acetona)"},
-      {id:"II",  label:"Pf < 23 °C, ponto de ebulição > 35 °C (ex: benzeno, gasolina)"},
-      {id:"III", label:"23 °C ≤ Pf ≤ 60 °C (ex: diesel, querosene)"},
-    ],
-    notes:"Embalagens com Pf > 60 °C podem ser isentas. Verificar Flash Point no MSDS.",
-    prohibited:[1,5,7,8],
-    restricted:[2,4,6,9],
-    compatible:[]
-  },
-  {
-    id: 4, code:"4", name:"Sólidos Inflamáveis / Substâncias Auto-Reativas e Pirofóricas",
-    desc:"Inclui sólidos facilmente inflamáveis (4.1), substâncias sujeitas a combustão espontânea (4.2) e substâncias que em contato com água emitem gases inflamáveis (4.3).",
-    ref:"IMDG 2.4",
-    subclasses:[
-      {id:"4.1", label:"Sólidos inflamáveis e substâncias auto-reativas"},
-      {id:"4.2", label:"Substâncias sujeitas a combustão espontânea (pirofóricas)"},
-      {id:"4.3", label:"Substâncias que em contato com água emitem gases inflamáveis"},
-    ],
-    notes:"4.2 (pirofóricos) requerem segregação rigorosa de fontes de umidade. 4.3 proibido próximo a qualquer líquido ou material úmido.",
-    prohibited:[1,7,8],
-    restricted:[2,3,5,6,9],
-    compatible:[]
-  },
-  {
-    id: 5, code:"5", name:"Substâncias Oxidantes e Peróxidos Orgânicos",
-    desc:"Substâncias que liberam oxigênio e intensificam combustão (5.1) e peróxidos orgânicos instáveis termicamente (5.2).",
-    ref:"IMDG 2.5",
-    subclasses:[
-      {id:"5.1", label:"Substâncias oxidantes (ex: hipoclorito, nitrato de amônio)"},
-      {id:"5.2", label:"Peróxidos orgânicos (ex: peróxido de benzoíla)"},
-    ],
-    notes:"5.2 possui temperatura de controle crítica — verificar SAPT/SADT. Muitos 5.2 requerem refrigeração e são incompatíveis com ácidos.",
-    prohibited:[1,7,8],
-    restricted:[2,3,4,6],
-    compatible:[9]
-  },
-  {
-    id: 6, code:"6", name:"Substâncias Tóxicas e Infectantes",
-    desc:"Substâncias com risco de envenenamento por ingestão, inalação ou contato (6.1) e substâncias infecciosas (6.2).",
-    ref:"IMDG 2.6",
-    subclasses:[
-      {id:"6.1", label:"Substâncias tóxicas (ex: arsênico, cianetos, pesticidas)"},
-      {id:"6.2", label:"Substâncias infectantes (ex: amostras biológicas, categoria A/B)"},
-    ],
-    notes:"6.2 (substâncias infectantes) possuem requisitos de embalagem P650 e segregação de alimentos/ração. Agentes de categoria A (UN 2814/2900) são extremamente restritivos.",
-    prohibited:[1],
-    restricted:[2,3,4,5,7,8],
-    compatible:[9]
-  },
-  {
-    id: 7, code:"7", name:"Material Radioativo",
-    desc:"Materiais com atividade específica superior a 70 kBq/kg (2 nCi/g).",
-    ref:"IMDG 2.7 / IAEA SSR-6",
-    subclasses:[
-      {id:"I-WHITE",   label:"Índice de transporte = 0 (superfície ≤ 0.5 mR/h)"},
-      {id:"II-YELLOW", label:"IT ≤ 1 (superfície ≤ 50 mR/h)"},
-      {id:"III-YELLOW",label:"IT ≤ 10 (superfície ≤ 200 mR/h)"},
-      {id:"FISSILE",   label:"Material físsil — controle de criticidade obrigatório"},
-    ],
-    notes:"⚠️ AUSÊNCIA REGULATÓRIA: Material radioativo requer aprovação prévia do operador e cálculo de Índice de Transporte (IT) acumulado por porão. Não pode ser estivado com filmes fotográficos, alimentos ou animais vivos. Consulte sempre o IMDG 7.1.4.",
-    prohibited:[1,3,4,5,8],
-    restricted:[2,6,9],
-    compatible:[]
-  },
-  {
-    id: 8, code:"8", name:"Substâncias Corrosivas",
-    desc:"Substâncias que por ação química causam dano severo ao tecido vivo e/ou danificam materiais e meios de transporte.",
-    ref:"IMDG 2.8",
-    subclasses:[
-      {id:"Ácidos",  label:"Ácidos corrosivos (ex: ácido sulfúrico, ácido clorídrico)"},
-      {id:"Bases",   label:"Bases corrosivas (ex: hidróxido de sódio, amônia aquosa)"},
-      {id:"Outros",  label:"Outros corrosivos (ex: hipoclorito, formaldeído)"},
-    ],
-    notes:"⚠️ AUSÊNCIA REGULATÓRIA: Ácidos e bases (ambos Classe 8) são incompatíveis entre si — a matriz 8×8 aparece como ✅ mas esta combinação específica requer segregação interna. Verificar Tabela 7.2.4 nota (c).",
-    prohibited:[1,2,3,4,5,7],
-    restricted:[6,9],
-    compatible:[]
-  },
-  {
-    id: 9, code:"9", name:"Substâncias Perigosas Diversas",
-    desc:"Substâncias que apresentam risco durante o transporte mas não se enquadram nas Classes 1–8 (ex: baterias de lítio, dry ice, substâncias perigosas ao meio ambiente).",
-    ref:"IMDG 2.9",
-    subclasses:[
-      {id:"Baterias de Lítio", label:"UN 3090 / 3091 / 3480 / 3481 — regras especiais SP 188/230"},
-      {id:"Dry Ice (CO₂ sólido)",label:"UN 1845 — risco de asfixia em porões fechados"},
-      {id:"MAM",               label:"Substâncias Perigosas ao Meio Ambiente (Marine Pollutants)"},
-      {id:"Elevadas Temperaturas",label:"Substâncias transportadas quentes (ex: asfalto, enxofre fundido)"},
-    ],
-    notes:"⚠️ AUSÊNCIA REGULATÓRIA: Baterias de lítio (especialmente Seção II) estão sujeitas a restrições de quantidade por embalagem e por aeronave/navio que não aparecem na matriz padrão. Dry ice em porões requer ventilação e aviso à tripulação.",
-    prohibited:[1,5],
-    restricted:[2,3,4,7,8],
-    compatible:[6]
-  },
-];
+// ── CONSTANTS ──────────────────────────────────────────────────────────────────
+const COLS  = ['A','B','C','D','E','F','G','H','I','J','K'];
+const TIERS = [5,4,3,2,1];
+const PAL   = ['#E53935','#FB8C00','#F9A825','#43A047','#00ACC1',
+               '#1E88E5','#8E24AA','#D81B60','#546E7A','#00695C'];
 
-// ─────────────────────────────────────────────
-// BUILD SIDEBAR
-// ─────────────────────────────────────────────
-function renderList(filter="") {
-  const f = filter.toLowerCase();
-  const html = classes
-    .filter(c => !f || c.name.toLowerCase().includes(f) || String(c.id).includes(f))
-    .map(c => `
-      <div class="class-item" id="item-${c.id}" onclick="selectClass(${c.id})">
-        <span class="class-num">${c.code}</span>
-        <span>
-          <div class="class-name">${c.name}</div>
-        </span>
-      </div>
-    `).join('');
-  document.getElementById('classList').innerHTML = html || '<div style="padding:16px;color:var(--muted);font-size:13px;">Nenhuma classe encontrada.</div>';
-}
+const SS_LABELS = {
+  men:     {yes:'Homens: Sim', no:'Homens: Não'},
+  reefer:  {active:'Reefer: Ativo', inactive:'Reefer: Inativo'},
+  protect: {protected:'Protegido', not_protected:'Não Protegido'},
+  limit:   {'1':'Limit: 1','2':'Limit: 2','3':'Limit: 3','4':'Limit: 4','5':'Limit: 5'},
+  status:  {open:'Aberta', closed:'Fechada', reserved:'Reservada'},
+};
+const SS_COLORS = {men:'#1E88E5',reefer:'#00897B',protect:'#8E24AA',limit:'#FB8C00',status:'#E53935'};
+const SS_ICONS  = {
+  status:{closed:'🔒',reserved:'⚑',open:'🟢'},
+  reefer:{active:'❄',inactive:'❄'},
+  protect:{protected:'🛡',not_protected:'🛡'},
+  men:{yes:'👷',no:'👷'},
+};
 
-function filterClasses() {
-  renderList(document.getElementById('searchInput').value);
-}
+// ── STATE ─────────────────────────────────────────────────────────────────────
+let quadras    = [{id:'q1',name:'Q1',bays:18},{id:'q2',name:'Q2',bays:14},{id:'q3',name:'Q3',bays:16},{id:'q4',name:'Q4',bays:12}];
+let curQ       = 'q1';
+let params     = [];
+let editPId    = null;   // param being edited (null = new)
+let selColor   = PAL[4];
+let selScopes  = ['slot','row','tier'];  // ISOLATED from DOM
+let blocks     = {};     // cid -> paramId
+let history    = [];     // [{id,cids,paramId,paramName,paramColor,count,bays,ssLabel,ts}]
+let lassoSel   = new Set();
+let selPId     = null;
+let expOpen    = false;
+let modeSelect = true;
 
-// ─────────────────────────────────────────────
-// SELECT CLASS → DETAIL PANEL
-// ─────────────────────────────────────────────
-function selectClass(id) {
-  const c = classes.find(x => x.id === id);
-  document.querySelectorAll('.class-item').forEach(el => el.classList.remove('active'));
-  const item = document.getElementById('item-'+id);
-  if(item) item.classList.add('active');
-
-  const getName = (cid) => { const cx = classes.find(x=>x.id===cid); return cx ? `Classe ${cx.code} – ${cx.name}` : ''; };
-
-  // Subclasses
-  let subHTML = '';
-  if(c.subclasses && c.subclasses.length){
-    subHTML = `<div class="subclasses-row">`+
-      c.subclasses.map(s=>`<div class="sub-chip"><strong>${s.id}</strong>${s.label}</div>`).join('')+
-      `</div>`;
-  }
-
-  // Prohibited
-  let prohibHTML = '';
-  if(c.prohibited.length){
-    prohibHTML = `<div class="section">
-      <div class="section-label bad">🚫 Proibido com</div>
-      <div class="tags">${c.prohibited.map(pid=>`<span class="tag tag-bad">${getName(pid)}</span>`).join('')}</div>
-    </div>`;
-  }
-
-  // Restricted
-  let restrHTML = '';
-  if(c.restricted.length){
-    restrHTML = `<div class="section">
-      <div class="section-label warn">⚠️ Segregação obrigatória</div>
-      <div class="tags">${c.restricted.map(rid=>`<span class="tag tag-warn">${getName(rid)}</span>`).join('')}</div>
-    </div>`;
-  }
-
-  // Compatible (explicit + derived)
-  const allOthers = classes.filter(x=>x.id!==id);
-  const compatList = allOthers.filter(x => !c.prohibited.includes(x.id) && !c.restricted.includes(x.id));
-  let compatHTML = '';
-  if(compatList.length){
-    compatHTML = `<div class="section">
-      <div class="section-label ok">✅ Compatível com</div>
-      <div class="tags">${compatList.map(cx=>`<span class="tag tag-ok">Classe ${cx.code} – ${cx.name}</span>`).join('')}</div>
-    </div>`;
-  }
-
-  // Notes / ausências
-  let notesHTML = '';
-  if(c.notes){
-    notesHTML = `<div class="notes-box"><strong>📌 Notas regulatórias e ausências:</strong>${c.notes}</div>`;
-  }
-
-  document.getElementById('panel').innerHTML = `
-    <div class="card">
-      <div class="detail-title">Classe ${c.code} – ${c.name}</div>
-      <div class="detail-desc">${c.desc}</div>
-      <span class="detail-ref">📖 Ref: ${c.ref}</span>
-      ${subHTML}
-      ${prohibHTML}
-      ${restrHTML}
-      ${compatHTML}
-      ${notesHTML}
-    </div>
-  `;
-}
-
-// ─────────────────────────────────────────────
-// BUILD MATRIX
-// ─────────────────────────────────────────────
-function getStatus(a, b) {
-  if(a === b) return 'self';
-  const ca = classes.find(c=>c.id===a);
-  if(!ca) return 'ok';
-  if(ca.prohibited.includes(b)) return 'bad';
-  if(ca.restricted.includes(b)) return 'warn';
-  return 'ok';
-}
-
-function renderMatrix() {
-  // Header
-  let headHTML = '<tr><th style="text-align:left;min-width:130px;">Classe</th>';
-  classes.forEach(c => headHTML += `<th>${c.code}</th>`);
-  headHTML += '</tr>';
-  document.getElementById('matrixHead').innerHTML = headHTML;
-
-  // Body
-  let bodyHTML = '';
-  classes.forEach(row => {
-    bodyHTML += `<tr><th>${row.code} – ${row.name}</th>`;
-    classes.forEach(col => {
-      const s = getStatus(row.id, col.id);
-      const sym = s==='ok'?'✅': s==='warn'?'⚠️': s==='self'?'—':'🚫';
-      const cls = s==='self'?'cell-self':`cell-${s}`;
-      bodyHTML += `<td class="${cls}" title="Cl.${row.code} × Cl.${col.code}">${sym}</td>`;
+// ── OCCUPANCY ─────────────────────────────────────────────────────────────────
+function makeOcc(bayNum, qId) {
+  if (qId==='q1'&&bayNum===5) return {
+    '1-A':1,'1-B':1,'1-C':1,'1-D':1,'1-E':1,'1-F':1,'1-G':1,'1-H':1,'1-I':1,'1-J':1,
+    '2-A':1,'2-B':1,'2-C':1,'2-D':1,'2-E':1,'2-F':1,'2-G':1,'2-H':1,
+    '3-A':1,'3-B':1,'3-C':1,'3-D':1,'3-E':1,'3-F':1,
+    '4-B':1,'4-C':1,'4-D':1,'4-E':1,'5-C':1,'5-D':1,'5-E':1,
+  };
+  if (qId==='q1'&&bayNum===7) return {
+    '1-A':1,'1-B':1,'1-C':1,'1-D':1,'1-E':1,'1-F':1,'1-G':1,'1-H':1,'1-I':1,'1-J':1,
+    '2-B':1,'2-C':1,'2-D':1,'2-E':1,'2-F':1,'2-G':1,'2-H':1,'2-I':1,
+    '3-C':1,'3-D':1,'3-E':1,'3-F':1,'3-H':1,'4-D':1,'4-E':1,
+  };
+  const seed = (bayNum*7+qId.charCodeAt(1))%11;
+  const v={};
+  COLS.forEach((r,ri)=>{
+    const h=(ri+seed)%5;
+    TIERS.slice().reverse().forEach(t=>{
+      v[`${t}-${r}`]=(t===1)?(t<=h):((t<=h)&&!!v[`${t-1}-${r}`]);
     });
-    bodyHTML += '</tr>';
   });
-  document.getElementById('matrixBody').innerHTML = bodyHTML;
+  return v;
 }
 
-// INIT
-renderList();
-renderMatrix();
+function makeCid(bay,t,r){return `${curQ}|${bay}|${t}|${r}`;}
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+function renderBays(){
+  const q=quadras.find(x=>x.id===curQ);
+  if(!q){document.getElementById('bays-ct').innerHTML='<div class="empty-st">Quadra não encontrada.</div>';return;}
+  document.getElementById('yard-title').textContent=`Mapa de slots — ${q.name}`;
+  document.getElementById('blk-qlabel').textContent=q.name;
+  const show=q.id==='q1'?[{n:5,label:'BAY 05 · Origem'},{n:7,label:'BAY 07 · Destino'}]:[{n:1,label:'BAY 01'},{n:3,label:'BAY 03'}];
+  let html='';
+  show.forEach(({n,label})=>{
+    const bayKey='bay'+String(n).padStart(2,'0');
+    const occ=makeOcc(n,q.id);
+    html+=`<div class="bay-card"><div class="bay-hdr"><div class="bay-lbl">${q.name} · <span>${label}</span></div><div class="bay-hint">Desenhe sobre os containers para selecionar</div></div><div class="grid-scroll"><table class="gtbl"><thead><tr><th></th>`;
+    COLS.forEach(c=>{html+=`<th class="gh">${c}</th>`;});
+    html+='</tr></thead><tbody>';
+    TIERS.forEach(t=>{
+      html+=`<tr><td class="grl">${t}</td>`;
+      COLS.forEach(r=>{
+        const k=`${t}-${r}`,id=makeCid(bayKey,t,r);
+        const isOcc=!!occ[k],bid=blocks[id];
+        const p=bid?params.find(x=>x.id===bid):null;
+        const hi=lassoSel.has(id);
+        if(!isOcc&&!p){html+=`<td style="padding:2px;"><div class="slot empty"></div></td>`;return;}
+        let st='',cls='slot';
+        if(p){st=`background:${p.color}CC;border:2px solid ${p.color};`;cls='slot blk';}
+        else if(isOcc){cls='slot occ';}
+        if(hi)cls+=' hi';
+        // slot icon
+        let icon='',tip='';
+        if(p){
+          const ss=p.stackStatus||{};
+          if(ss.status&&SS_ICONS.status[ss.status]) icon=SS_ICONS.status[ss.status];
+          else if(ss.reefer&&SS_ICONS.reefer[ss.reefer]) icon=SS_ICONS.reefer[ss.reefer];
+          else if(ss.protect&&SS_ICONS.protect[ss.protect]) icon=SS_ICONS.protect[ss.protect];
+          else if(ss.men&&SS_ICONS.men[ss.men]) icon=SS_ICONS.men[ss.men];
+          else if(ss.highcube) icon='⬛';
+          else if(ss.limit) icon=ss.limit;
+          // tooltip
+          const lines=[p.name];
+          ['men','reefer','protect','limit','status'].forEach(k=>{
+            if(ss[k]&&SS_LABELS[k][ss[k]])lines.push(SS_LABELS[k][ss[k]]);
+          });
+          if(ss.highcube)lines.push('Bloquear High Cube');
+          tip=lines.join(' · ');
+        }
+        html+=`<td style="padding:2px;" title="${tip}"><div class="${cls}" style="${st}" data-cid="${id}"><div class="si">`;
+        if(isOcc&&!p){html+=`<span class="sc">KHH 2200</span><span class="ss-sub">1.5</span>`;}
+        else if(p){
+          html+=icon
+            ?`<span class="sc" style="font-size:11px;">${icon}</span>`
+            :`<span class="sc" style="font-size:8px;">${p.name.substring(0,5)}</span>`;
+        }
+        html+=`</div></div></td>`;
+      });
+      html+='</tr>';
+    });
+    html+=`</tbody></table></div><div class="bay-foot"><i class="ti ti-chevron-right"></i>HSUQO${81290+n}</div></div>`;
+  });
+  document.getElementById('bays-ct').innerHTML=html;
+}
+
+function renderAll(){renderBays();renderLeg();renderBlocked();updateStats();}
+
+function renderLeg(){
+  let h='<div class="leg"><div class="leg-box" style="background:var(--cym);border:1px solid var(--cyd)"></div>Ocupado</div>';
+  h+='<div class="leg"><div class="leg-box" style="background:transparent;border:1px dashed var(--bd)"></div>Livre</div>';
+  params.forEach(p=>{h+=`<div class="leg"><div class="leg-box" style="background:${p.color}CC;border:1px solid ${p.color}"></div>${p.name}</div>`;});
+  document.getElementById('leg-row').innerHTML=h;
+}
+
+function renderBlocked(){
+  const prefix=curQ+'|';
+  const sect=document.getElementById('blk-sect');
+  const entries=history.filter(h=>h.cids.some(c=>c.startsWith(prefix)));
+  if(!entries.length){sect.style.display='none';return;}
+  sect.style.display='block';
+  document.getElementById('blk-items').innerHTML=entries.slice().reverse().map(h=>{
+    const time=new Date(h.ts).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+    const meta=[h.count+' slot(s)',h.bays,h.ssLabel].filter(Boolean).join(' · ')+` — ${time}`;
+    return `<div class="blk-item">
+      <span class="bdot" style="background:${h.paramColor};margin-top:3px;"></span>
+      <div class="blk-item-info">
+        <div class="blk-item-name">${h.paramName}</div>
+        <div class="blk-item-meta">${meta}</div>
+      </div>
+      <button class="blk-item-del" onclick="deleteApplication('${h.id}')" title="Remover"><i class="ti ti-trash"></i></button>
+    </div>`;
+  }).join('');
+}
+
+function renderParamList(){
+  const el=document.getElementById('param-list');
+  if(!params.length){
+    el.innerHTML='<div class="empty-st">Nenhum parâmetro criado.<br>Clique em <strong>+ Novo</strong> para começar.</div>';
+    return;
+  }
+  el.innerHTML=params.map(p=>{
+    const on=selPId===p.id;
+    const sc=p.scopes||['slot','row','tier'];
+    const ss=p.stackStatus||{};
+    let badges='';
+    ['men','reefer','protect','limit','status'].forEach(k=>{
+      if(ss[k]&&SS_LABELS[k]&&SS_LABELS[k][ss[k]]){
+        badges+=`<span class="ss-badge" style="background:${SS_COLORS[k]}18;color:${SS_COLORS[k]};border:1px solid ${SS_COLORS[k]}44;">${SS_LABELS[k][ss[k]]}</span>`;
+      }
+    });
+    if(ss.highcube) badges+=`<span class="ss-badge" style="background:#F9A82518;color:#F57F17;border:1px solid #F9A82544;">⬛ High Cube</span>`;
+    return `<div class="pc${on?' on':''}" onclick="selParam('${p.id}')">
+      <div class="pc-top">
+        <div class="pdot" style="background:${p.color}"></div>
+        <span class="pc-name">${p.name}</span>
+        <div class="pc-acts">
+          <button class="pc-btn" onclick="editParam(event,'${p.id}')" title="Editar"><i class="ti ti-edit"></i></button>
+          <button class="pc-btn" onclick="deleteParam(event,'${p.id}')" title="Excluir"><i class="ti ti-trash"></i></button>
+        </div>
+      </div>
+      ${p.desc?`<div class="pc-desc">${p.desc}</div>`:''}
+      <div class="pc-scopes">${sc.map(s=>`<span class="pcs ${s}">${s==='slot'?'Slot 1TEU':s==='row'?'Row':'Tier'}</span>`).join('')}</div>
+      ${badges?`<div class="ss-badges">${badges}</div>`:''}
+    </div>`;
+  }).join('');
+}
+
+function updateStats(){
+  document.getElementById('st-p').textContent=params.length;
+  const prefix=curQ+'|';
+  document.getElementById('st-b').textContent=Object.keys(blocks).filter(k=>k.startsWith(prefix)).length;
+  document.getElementById('st-s').textContent=lassoSel.size;
+  const can=lassoSel.size>0&&selPId!==null;
+  document.getElementById('btn-aply').disabled=!can;
+  document.getElementById('btn-undo').disabled=history.length===0;
+  document.getElementById('sel-info').innerHTML=lassoSel.size?`<b>${lassoSel.size}</b> slot(s) selecionado(s)`:'Nenhuma seleção';
+}
+
+// ── PARAM SELECTION ───────────────────────────────────────────────────────────
+function selParam(id){
+  selPId=(selPId===id)?null:id;
+  const bar=document.getElementById('abar');
+  if(selPId){
+    const p=params.find(x=>x.id===id);
+    bar.className='abar on';
+    document.getElementById('ab-dot').style.background=p.color;
+    document.getElementById('ab-name').textContent=p.name;
+  } else {
+    bar.className='abar';
+  }
+  renderParamList();updateStats();
+}
+
+// ── APPLY / UNDO ──────────────────────────────────────────────────────────────
+function applyBlock(){
+  if(!lassoSel.size||!selPId)return;
+  const p=params.find(x=>x.id===selPId);
+  if(!p)return;
+  const scopes=p.scopes||['slot','row','tier'];
+  const ss=p.stackStatus||{};
+
+  const touchedRows=new Set(),touchedTiers=new Set();
+  lassoSel.forEach(cid=>{
+    const pts=cid.split('|');
+    touchedRows.add(pts[1]+'|'+pts[3]);
+    touchedTiers.add(pts[1]+'|'+pts[2]);
+  });
+
+  const toBlock=new Set(lassoSel);
+  if(scopes.includes('row')){
+    document.querySelectorAll('.slot[data-cid]').forEach(el=>{
+      const cid=el.dataset.cid,pts=cid.split('|');
+      if(touchedRows.has(pts[1]+'|'+pts[3]))toBlock.add(cid);
+    });
+  }
+  if(scopes.includes('tier')){
+    document.querySelectorAll('.slot[data-cid]').forEach(el=>{
+      const cid=el.dataset.cid,pts=cid.split('|');
+      if(touchedTiers.has(pts[1]+'|'+pts[2]))toBlock.add(cid);
+    });
+  }
+
+  const applied=[];
+  toBlock.forEach(cid=>{
+    const tier=parseInt(cid.split('|')[2]);
+    if(ss.limit&&tier>parseInt(ss.limit))return;
+    blocks[cid]=selPId;
+    applied.push(cid);
+  });
+
+  if(!applied.length){showToast('Nenhum slot válido na seleção');return;}
+
+  const ts=Date.now();
+  const bays=[...new Set(applied.map(c=>c.split('|')[1]))].join(', ');
+  const ssLabel=['men','reefer','protect','limit','status'].map(k=>ss[k]&&SS_LABELS[k]?SS_LABELS[k][ss[k]]:'').filter(Boolean).join(' · ')+(ss.highcube?' · High Cube':'');
+
+  history.push({
+    id:'h'+ts, cids:applied, paramId:selPId,
+    paramName:p.name, paramColor:p.color,
+    count:applied.length, bays, ssLabel, ts,
+  });
+
+  lassoSel=new Set();
+  renderAll();
+  if(expOpen)updateExp();
+  showToast([`${applied.length} slot(s) bloqueado(s)`,ssLabel].filter(Boolean).join(' · '));
+}
+
+function undoLast(){
+  if(!history.length)return;
+  const last=history.pop();
+  last.cids.forEach(cid=>{if(blocks[cid]===last.paramId)delete blocks[cid];});
+  renderAll();
+  if(expOpen)updateExp();
+  showToast(`Desfeito: "${last.paramName}" — ${last.count} slot(s)`);
+}
+
+function deleteApplication(hid){
+  const idx=history.findIndex(h=>h.id===hid);
+  if(idx<0)return;
+  const entry=history[idx];
+  entry.cids.forEach(cid=>{if(blocks[cid]===entry.paramId)delete blocks[cid];});
+  history.splice(idx,1);
+  renderAll();
+  if(expOpen)updateExp();
+  showToast(`Aplicação removida: "${entry.paramName}"`);
+}
+
+function clearSel(){lassoSel=new Set();renderAll();}
+
+function clearAll(){
+  const prefix=curQ+'|';
+  Object.keys(blocks).filter(k=>k.startsWith(prefix)).forEach(k=>delete blocks[k]);
+  history=history.filter(h=>!h.cids.some(c=>c.startsWith(prefix)));
+  lassoSel=new Set();
+  renderAll();
+  if(expOpen)updateExp();
+  showToast('Todos os bloqueios removidos');
+}
+
+// ── LASSO ─────────────────────────────────────────────────────────────────────
+const lassoLine=document.getElementById('lasso-line');
+let ld={active:false,pts:[]};
+function ptStr(pts){return pts.map(p=>p.x+','+p.y).join(' ');}
+function pip(px,py,poly){
+  let inside=false;
+  for(let i=0,j=poly.length-1;i<poly.length;j=i++){
+    const xi=poly[i].x,yi=poly[i].y,xj=poly[j].x,yj=poly[j].y;
+    if(((yi>py)!==(yj>py))&&(px<(xj-xi)*(py-yi)/(yj-yi)+xi))inside=!inside;
+  }
+  return inside;
+}
+function hitTest(){
+  if(ld.pts.length<3)return;
+  const poly=[...ld.pts,ld.pts[0]];
+  const found=new Set();
+  document.querySelectorAll('.slot[data-cid]').forEach(el=>{
+    const r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
+    const pts=[{x:cx,y:cy},{x:r.left+4,y:r.top+4},{x:r.right-4,y:r.top+4},{x:r.left+4,y:r.bottom-4},{x:r.right-4,y:r.bottom-4}];
+    if(pts.some(tp=>pip(tp.x,tp.y,poly)))found.add(el.dataset.cid);
+  });
+  lassoSel=found;
+}
+document.addEventListener('mousedown',e=>{
+  if(!modeSelect||!selPId)return;
+  const yc=document.getElementById('yard-col');
+  if(!yc.contains(e.target))return;
+  ld.active=true;ld.pts=[{x:e.clientX,y:e.clientY}];
+  lassoLine.setAttribute('points',ptStr(ld.pts));lassoLine.style.display='inline';
+  e.preventDefault();
+},true);
+document.addEventListener('mousemove',e=>{
+  if(!ld.active)return;
+  ld.pts.push({x:e.clientX,y:e.clientY});
+  lassoLine.setAttribute('points',ptStr(ld.pts));
+});
+document.addEventListener('mouseup',e=>{
+  if(!ld.active)return;
+  ld.active=false;lassoLine.style.display='none';lassoLine.setAttribute('points','');
+  hitTest();renderAll();ld.pts=[];
+});
+
+// ── QUADRA ────────────────────────────────────────────────────────────────────
+function changeQ(id){
+  curQ=id;lassoSel=new Set();
+  document.getElementById('qinfo').textContent=(quadras.find(x=>x.id===id)||{bays:''}).bays+' bays';
+  renderAll();
+}
+function renderQDrop(){
+  document.getElementById('qsel').innerHTML=quadras.map(q=>`<option value="${q.id}"${q.id===curQ?' selected':''}>${q.name}</option>`).join('');
+  document.getElementById('qinfo').textContent=(quadras.find(x=>x.id===curQ)||{bays:''}).bays+' bays';
+}
+function setMode(m){
+  modeSelect=(m==='s');
+  document.getElementById('mb-s').className='mbtn'+(m==='s'?' on':'');
+  document.getElementById('mb-v').className='mbtn'+(m==='v'?' on':'');
+}
+
+// ── QUADRA MODAL ──────────────────────────────────────────────────────────────
+function openQM(){renderQList();document.getElementById('qm-overlay').className='overlay open';}
+function closeQM(){document.getElementById('qm-overlay').className='overlay';}
+function renderQList(){
+  document.getElementById('qm-list').innerHTML=quadras.map((q,i)=>`
+    <div class="qm-row">
+      <div class="qm-idx">${i+1}</div>
+      <span class="qm-name">${q.name}</span>
+      <span class="qm-bays">${q.bays} bays</span>
+      <button class="qm-del" onclick="delQ('${q.id}')"><i class="ti ti-trash"></i></button>
+    </div>`).join('');
+}
+function addQ(){
+  const name=document.getElementById('qm-name').value.trim();
+  const bays=parseInt(document.getElementById('qm-bays').value)||10;
+  if(!name)return;
+  if(quadras.find(q=>q.name.toLowerCase()===name.toLowerCase())){
+    const inp=document.getElementById('qm-name');inp.style.borderColor='var(--red)';
+    setTimeout(()=>{inp.style.borderColor='';},1500);return;
+  }
+  quadras.push({id:'q'+Date.now(),name,bays});
+  document.getElementById('qm-name').value='';
+  renderQList();renderQDrop();
+}
+function delQ(id){
+  if(quadras.length<=1)return;
+  quadras=quadras.filter(q=>q.id!==id);
+  if(curQ===id)curQ=quadras[0].id;
+  Object.keys(blocks).filter(k=>k.startsWith(id+'|')).forEach(k=>delete blocks[k]);
+  history=history.filter(h=>!h.cids.some(c=>c.startsWith(id+'|')));
+  renderQList();renderQDrop();renderAll();
+}
+
+// ── PARAM MODAL ───────────────────────────────────────────────────────────────
+function openParamModal(id){
+  editPId=id||null;
+  const p=id?params.find(x=>x.id===id):null;
+  document.getElementById('param-modal-title').textContent=id?'Editar Parâmetro':'Novo Parâmetro';
+  document.getElementById('pm-name').value=p?p.name:'';
+  document.getElementById('pm-desc').value=p?p.desc:'';
+  selColor=p?p.color:PAL[params.length%PAL.length];
+
+  // scopes — isolated state, NOT reading from DOM
+  selScopes=p?(p.scopes||['slot','row','tier']):['slot','row','tier'];
+
+  // render color grid
+  document.getElementById('pm-cgrid').innerHTML=PAL.map(c=>
+    `<div class="copt${c===selColor?' pk':''}" style="background:${c}" onclick="pickColor('${c}')"></div>`
+  ).join('');
+
+  // render scope buttons from state
+  document.querySelectorAll('#pm-scopes .sopt').forEach(el=>{
+    el.className='sopt'+(selScopes.includes(el.dataset.s)?' on':'');
+    el.onclick=()=>toggleScope(el);
+  });
+
+  // stack status
+  const ss=p?p.stackStatus:{};
+  document.getElementById('pm-men').value    =ss.men||'';
+  document.getElementById('pm-reefer').value =ss.reefer||'';
+  document.getElementById('pm-protect').value=ss.protect||'';
+  document.getElementById('pm-limit').value  =ss.limit||'';
+  document.getElementById('pm-status').value =ss.status||'';
+  document.getElementById('pm-highcube').checked=ss.highcube||false;
+
+  document.getElementById('param-overlay').className='overlay open';
+  setTimeout(()=>document.getElementById('pm-name').focus(),80);
+}
+
+function closeParamModal(){document.getElementById('param-overlay').className='overlay';editPId=null;}
+
+function pickColor(c){
+  selColor=c;
+  document.querySelectorAll('#pm-cgrid .copt').forEach(el=>{
+    el.className='copt'+(el.style.background===c?'copt pk':'copt');
+    // compare hex
+    if(el.getAttribute('style').includes(c))el.className='copt pk';
+    else el.className='copt';
+  });
+  // re-render to be safe
+  document.getElementById('pm-cgrid').innerHTML=PAL.map(cc=>
+    `<div class="copt${cc===selColor?' pk':''}" style="background:${cc}" onclick="pickColor('${cc}')"></div>`
+  ).join('');
+}
+
+function toggleScope(el){
+  const s=el.dataset.s;
+  if(selScopes.includes(s)){
+    selScopes=selScopes.filter(x=>x!==s);
+  } else {
+    selScopes.push(s);
+  }
+  el.className='sopt'+(selScopes.includes(s)?' on':'');
+}
+
+function saveParam(){
+  const name=document.getElementById('pm-name').value.trim();
+  if(!name){
+    const fi=document.getElementById('pm-name');
+    fi.style.borderColor='var(--red)';
+    setTimeout(()=>{fi.style.borderColor='';},1500);return;
+  }
+  const desc=document.getElementById('pm-desc').value.trim();
+  // scopes come from isolated state, NOT from DOM querySelectorAll
+  const scopes=selScopes.length?[...selScopes]:['slot'];
+  const stackStatus={
+    men:     document.getElementById('pm-men').value,
+    reefer:  document.getElementById('pm-reefer').value,
+    protect: document.getElementById('pm-protect').value,
+    limit:   document.getElementById('pm-limit').value,
+    status:  document.getElementById('pm-status').value,
+    highcube:document.getElementById('pm-highcube').checked,
+  };
+  if(editPId){
+    const p=params.find(x=>x.id===editPId);
+    if(p) Object.assign(p,{name,desc,color:selColor,scopes,stackStatus});
+  } else {
+    params.push({id:'p'+Date.now(),name,desc,color:selColor,scopes,stackStatus});
+  }
+  closeParamModal();
+  renderParamList();
+  renderAll();
+  showToast(editPId?`"${name}" atualizado`:`"${name}" criado — clique para ativar`);
+}
+
+function editParam(e,id){e.stopPropagation();openParamModal(id);}
+function deleteParam(e,id){
+  e.stopPropagation();
+  params=params.filter(x=>x.id!==id);
+  Object.keys(blocks).forEach(k=>{if(blocks[k]===id)delete blocks[k];});
+  history=history.filter(h=>h.paramId!==id);
+  if(selPId===id){selPId=null;document.getElementById('abar').className='abar';}
+  renderParamList();renderAll();
+  if(expOpen)updateExp();
+  showToast('Parâmetro excluído');
+}
+
+// ── EXPORT ────────────────────────────────────────────────────────────────────
+function toggleExp(){
+  expOpen=!expOpen;
+  document.getElementById('exp-panel').className='exp-panel'+(expOpen?' on':'');
+  if(expOpen)updateExp();
+}
+function updateExp(){
+  const data={terminal:'HX CY',exportedAt:new Date().toISOString(),aplicacoes:[],quadras:{}};
+  history.forEach(h=>{
+    const p=params.find(x=>x.id===h.paramId);
+    data.aplicacoes.push({parametro:h.paramName,slots:h.count,bays:h.bays,stackStatus:p?(p.stackStatus||{}):{},timestamp:new Date(h.ts).toISOString()});
+  });
+  quadras.forEach(q=>{
+    const prefix=q.id+'|';
+    const keys=Object.keys(blocks).filter(k=>k.startsWith(prefix));
+    if(!keys.length)return;
+    data.quadras[q.name]={};
+    keys.forEach(k=>{
+      const pid=blocks[k],p=params.find(x=>x.id===pid);if(!p)return;
+      if(!data.quadras[q.name][p.name])data.quadras[q.name][p.name]={stackStatus:p.stackStatus||{},slots:[]};
+      const pts=k.split('|');
+      data.quadras[q.name][p.name].slots.push({bay:pts[1],tier:+pts[2],row:pts[3]});
+    });
+  });
+  document.getElementById('exp-pre').textContent=JSON.stringify(data,null,2);
+}
+
+// ── KEYBOARD ─────────────────────────────────────────────────────────────────
+document.addEventListener('keydown',e=>{
+  if((e.ctrlKey||e.metaKey)&&e.key==='z'){e.preventDefault();undoLast();}
+});
+
+// ── TOAST ─────────────────────────────────────────────────────────────────────
+let toastT=null;
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.innerHTML=`<i class="ti ti-check" style="color:var(--cym);font-size:14px;"></i>${msg}`;
+  t.className='toast show';
+  clearTimeout(toastT);
+  toastT=setTimeout(()=>{t.className='toast';},3000);
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+document.getElementById('tbdate').textContent=new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
+renderQDrop();
+renderParamList();
+renderAll();
 </script>
-</body>
-</html>
+
+
+</body></html>
